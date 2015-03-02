@@ -15,19 +15,19 @@ app.listen(port, function() {
 
 // new ivr session
 app.get('/', function(req, res) {
-  var ivr_session = ivr.newSession(req);
-  res.send(ivr_session.response());
+  ivr.newSession(req).then(function(response) {
+    res.send(response);
+  });
 });
 
 app.post('/', function(req, res) {
-  var ivr_session = ivr.resumeSession(req);
-  res.send(ivr_session.response());
+  res.send(ivr.resumeSession(req));
 });
 
 app.post('/gather', function(req, res) {
-  
+  res.send(ivr.gather(req));
 });
 
 app.post('/split', function(req, res) {
-
+  res.send(ivr.split(req));
 });

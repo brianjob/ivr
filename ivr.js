@@ -1,10 +1,15 @@
-var sapp = require('./sapp');
+var sapp    = require('./sapp'),
+ivr_factory = require('./ivr-factory');
 // EFFECTS:
 // 1. Looks up ivr settings based on number from request
 // 2. Creates a new ivr session
 // 3. Starts the session
+// 4. returns a promise resolving with the ivr session
 var newSession = function(req) {
-
+  return sapp.ivr_settings(req.query.To).then(function(settings) {
+    var ivr = ivr_factory.create(settings);
+    return ivr.run();
+  });
 };
 
 // EFFECTS:
@@ -12,5 +17,16 @@ var newSession = function(req) {
 // 2. Executes instructions for the current node
 // 3. Updates the current node
 var resumeSession = function(req) {
-
+  var ivr = ivr_factory.create(req.session.ivr);
+  return ivr.run();
 };
+
+var gather = function(req) {
+  var ivr = ivr_factory.create(req.session.ivr);
+  return ivr.gather();
+};
+
+var split = function(req) {
+  var ivr = ivr_factory.create(req.session.ivr);
+  return ivr.split();
+}

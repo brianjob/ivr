@@ -13,6 +13,7 @@ app.listen(port, function() {
   console.log('listening on port ' + port);
 });
 
+// new ivr session
 app.get('/', function(req, res) {
   var ivr_session = ivr.newSession(req);
   res.send(ivr_session.response());
@@ -21,4 +22,12 @@ app.get('/', function(req, res) {
 app.post('/', function(req, res) {
   var ivr_session = ivr.resumeSession(req);
   res.send(ivr_session.response());
+});
+
+app.post('/gather', function(req, res) {
+  
+});
+
+app.post('/split', function(req, res) {
+
 });

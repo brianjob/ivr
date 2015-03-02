@@ -1,3 +1,4 @@
+var sapp = require('./sapp');
 // EFFECTS:
 // 1. Looks up ivr settings based on number from request
 // 2. Creates a new ivr session

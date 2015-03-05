@@ -34,6 +34,8 @@ app.listen(port, function() {
 app.get('/', function(req, res) {
   ivr.newSession(req).then(function(response) {
     res.send(response);
+  }).catch(function(err) {
+    console.error(err.stack);
   });
 });
 

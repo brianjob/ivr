@@ -1,7 +1,11 @@
 var express = require('express'),
     session = require('express-session'),
  bodyParser = require('body-parser'),
+     assert = require('assert'),
         ivr = require('./ivr');
+
+assert(process.env.ACCOUNTS_HOST, 'ACCOUNTS_HOST must be set');
+assert(process.env.SESSION_SECRET, 'SESSION_SECRET must be set');
 
 var app = express();
 var port = process.env.PORT || 5000;

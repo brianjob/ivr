@@ -1,5 +1,4 @@
 var twilio   = require('twilio');
-var template = require('./template');
 var bars     = require('handlebars');
 var split    = require('./split');
 var gather   = require('./gather');

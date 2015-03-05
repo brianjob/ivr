@@ -52,7 +52,6 @@ var createIVR = function(spec) {
     voice           : spec.voice,
     language        : spec.language,
     default_timeout : spec.default_timeout,
-    nodes           : spec.nodes.map(function(elt) { return createNode(ivr, elt); }),
     model           : {
       domain : spec.domain
     },
@@ -73,6 +72,9 @@ var createIVR = function(spec) {
       return result[0];
     }
   };
+  
+  // construct each node
+  ivr.nodes = spec.nodes.map(function(elt) { return createNode(ivr, elt); });
 
   // if a current node exists, set it, otherwise it should be the first node
   if (spec.current_node) {

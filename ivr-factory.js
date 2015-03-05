@@ -54,23 +54,26 @@ var createIVR = function(spec) {
     default_timeout : spec.default_timeout,
     model           : {
       domain : spec.domain
-    },
-    getNode         : function(id) {
-      var result = this.nodes.filter(function(elt) {
-	return elt.id === id;
-      });
-      
-      if (result.length > 1) {
-	throw new Error('multiple nodes with that id exist');
-      }
-      if (result < 1) {
-	throw new Error('no node with that id exists');
-      }
-      return result[0];
-    },
-    run              : function() {
-      return this.current_node.run();
     }
+  };
+
+  console.log('ivr mid way: ' + JSON.stringify(ivr, undefined, 2));
+
+  ivr.getNode = function(id) {
+    var result = this.nodes.filter(function(elt) {
+      return elt.id === id;
+    });
+    
+    if (result.length > 1) {
+      throw new Error('multiple nodes with that id exist');
+    }
+    if (result < 1) {
+      throw new Error('no node with that id exists');
+    }
+    return result[0];
+  };
+  ivr.run = function() {
+    return this.current_node.run();
   };
 
   // construct the nodes

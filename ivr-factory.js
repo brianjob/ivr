@@ -14,9 +14,10 @@ var createNode = function(ivr, spec) {
   if (!spec.redirect) { throw new Error('node must have redirect'); }
  
   var node = {
-    ivr    : ivr,
-    id     : spec.id,
-    method : spec.method
+    ivr      : ivr,
+    id       : spec.id,
+    method   : spec.method,
+    template : spec.template
   };
 
   if (node.method === 'say') {

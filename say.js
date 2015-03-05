@@ -2,10 +2,7 @@ var twilio = require('twilio');
 var bars   = require('handlebars');
 
 module.exports.run = function(model) {
-  if (!this.template) { 
-    for (var prop in this) { console.log(prop); }
-    throw new Error('say node must have template'); 
-  }
+  if (!this.template) { throw new Error('say node must have template'); }
   var template = bars.compile(this.template);
   
   var twiml = new twilio.TwimlResponse();  

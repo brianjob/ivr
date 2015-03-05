@@ -31,6 +31,7 @@ var createNode = function(ivr, spec) {
 
   return node;
 };
+module.exports.createNode = createNode;
 
 // creates a new ivr object based on a json spec and returns it
 var createIVR = function(spec) {

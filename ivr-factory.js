@@ -6,6 +6,9 @@ var say      = require('./say');
 
 // creates a new node object based on a json spec and returns it
 var createNode = function(ivr, spec) {
+  console.log('createNode()');
+  console.log('ivr: ' + JSON.stringify(ivr, undefined, 2));
+
   if (!spec.id)       { throw new Error('node must have id'); }
   if (!spec.method)   { throw new Error('node must have method'); }
   if (!spec.redirect) { throw new Error('node must have redirect'); }

@@ -34,6 +34,7 @@ var createNode = function(ivr, spec) {
 
 // creates a new ivr object based on a json spec and returns it
 var createIVR = function(spec) {
+  console.log('createIVR()');
   if (!spec.domain) { throw new Error('IVR must have domain'); }
   if (!spec.access_number) { throw new Error('IVR must have access_number'); }
   if (!spec.operator_number) { throw new Error('IVR must have operator_number'); }
@@ -76,6 +77,8 @@ var createIVR = function(spec) {
   } else {
     ivr.current_node = ivr.nodes[0];
   }
+
+  return ivr;
 };  
 
 module.exports.create = createIVR;

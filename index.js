@@ -25,9 +25,11 @@ app.post('/', function(req, res) {
 });
 
 app.post('/gather', function(req, res) {
-  res.send(ivr.gather(req));
+  ivr.gather(req.body);
+  res.redirect('/');
 });
 
 app.post('/split', function(req, res) {
-  res.send(ivr.split(req));
+  ivr.split(req.body);
+  res.redirect('/');
 });

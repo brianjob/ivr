@@ -23,6 +23,7 @@ var createNode = function(ivr, spec) {
     node.run = gather.run;
     node.gather = gather.gather;
   } else if (node.method === 'split') {
+    if (!spec.invalid_input_redirect) { throw new Error('split node must define invalid_input_redirect'); }
     node.run = split.run;
     node.split = split.split;
   } else {
@@ -49,6 +50,9 @@ var createIVR = function(spec) {
     language        : spec.language,
     default_timeout : spec.default_timeout,
     nodes           : spec.nodes.map(function(elt) { return createNode(ivr, elt); }),
+    model           : {
+      domain : spec.domain
+    },
     getNode         : function(id) {
       var result = this.nodes.filter(function(elt) {
 	return elt.id === id;

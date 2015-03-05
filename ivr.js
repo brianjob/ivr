@@ -17,16 +17,13 @@ var newSession = function(req) {
 // 2. Executes instructions for the current node
 // 3. Updates the current node
 var resumeSession = function(req) {
-  var ivr = ivr_factory.create(req.session.ivr);
-  return ivr.run();
+  return ivr_factory.create(req.session.ivr).run();
 };
 
 var gather = function(req) {
-  var ivr = ivr_factory.create(req.session.ivr);
-  return ivr.gather();
+  return ivr_factory.create(req.session.ivr).gather();
 };
 
 var split = function(req) {
-  var ivr = ivr_factory.create(req.session.ivr);
-  return ivr.split();
-}
+  return ivr_factory.create(req.session.ivr).split();
+};

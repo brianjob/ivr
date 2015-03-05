@@ -1,4 +1,5 @@
 var twilio = require('twilio');
+var lib    = require('./library');
 
 module.exports.run = function() {
   if (!this.prompt) { throw new Error('gather node must have a prompt'); }
@@ -19,6 +20,7 @@ module.exports.run = function() {
   return twiml.toString();
 };
 
-module.exports.gather = function() {
-
+module.exports.gather = function(input) {
+  lib[this.action](this.ivr.model, input);
+  this.ivr.current_node = this.ivr.getNode(this.redirect);
 };

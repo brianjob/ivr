@@ -27,6 +27,15 @@ module.exports.run = function() {
   return twiml.toString();
 };
 
-module.exports.split = function() {
-  
+module.exports.split = function(input) {
+  var result = this.paths.filter(function(elt) {
+    return elt.key === input;
+  })[0];
+
+  if (result) {
+    this.ivr.current_node = result.redirect;
+  } else {
+    // user input did not match one of the available paths
+    this.ivr.current_node = this.invalid_input_redirect;
+  }   
 };

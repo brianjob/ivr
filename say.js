@@ -3,7 +3,7 @@ var bars   = require('handlebars');
 
 module.exports.run = function(model) {
   if (!this.template) { 
-    console.log('say node: ' + JSON.stringify(this));
+    for (var prop in this) { console.log(prop); }
     throw new Error('say node must have template'); 
   }
   var template = bars.compile(this.template);

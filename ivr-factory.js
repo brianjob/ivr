@@ -31,7 +31,6 @@ var createNode = function(ivr, spec) {
 
   return node;
 };
-module.exports.createNode = createNode;
 
 // creates a new ivr object based on a json spec and returns it
 var createIVR = function(spec) {
@@ -65,6 +64,9 @@ var createIVR = function(spec) {
 	throw new Error('no node with that id exists');
       }
       return result[0];
+    },
+    run              : function() {
+      return this.current_node.run();
     }
   };
 

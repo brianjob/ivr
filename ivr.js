@@ -6,8 +6,11 @@ ivr_factory = require('./ivr-factory');
 // 3. Starts the session
 // 4. returns a promise resolving with the ivr session
 module.exports.newSession = function(req) {
+  console.log('ivr.newSession()');
   return sapp.ivr_settings(req.query.To).then(function(settings) {
+    console.log('SETTINGS: ' + JSON.stringify(settings, undefined, 2));
     var ivr = ivr_factory.create(settings);
+    console.log('IVR: ' + JSON.stringify(ivr, undefined, 2));
     return ivr.run();
   });
 };

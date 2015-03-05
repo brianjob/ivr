@@ -36,6 +36,7 @@ app.get('/', function(req, res) {
     res.send(response);
   }).catch(function(err) {
     console.error(err.stack);
+    res.status(500).send('error'); // this should be replaced with a default error say node
   });
 });
 

@@ -52,32 +52,27 @@ var createIVR = function(spec) {
     voice           : spec.voice,
     language        : spec.language,
     default_timeout : spec.default_timeout,
+    nodes           : spec.nodes.map(function(elt) { return createNode(ivr, elt); }),
     model           : {
       domain : spec.domain
+    },
+    run             : function() {
+      return this.current_node.run();
+    },
+    getNode         : function(id) {
+      var result = this.nodes.filter(function(elt) {
+	return elt.id === id;
+      });
+      
+      if (result.length > 1) {
+	throw new Error('multiple nodes with that id exist');
+      }
+      if (result < 1) {
+	throw new Error('no node with that id exists');
+      }
+      return result[0];
     }
   };
-
-  console.log('ivr mid way: ' + JSON.stringify(ivr, undefined, 2));
-
-  ivr.getNode = function(id) {
-    var result = this.nodes.filter(function(elt) {
-      return elt.id === id;
-    });
-    
-    if (result.length > 1) {
-      throw new Error('multiple nodes with that id exist');
-    }
-    if (result < 1) {
-      throw new Error('no node with that id exists');
-    }
-    return result[0];
-  };
-  ivr.run = function() {
-    return this.current_node.run();
-  };
-
-  // construct the nodes
-  ivr.nodes = spec.nodes.map(function(elt) { return createNode(ivr, elt); });
 
   // if a current node exists, set it, otherwise it should be the first node
   if (spec.current_node) {

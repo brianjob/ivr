@@ -31,6 +31,7 @@ module.exports.newSession = function(req) {
 var resumeSessionHelper = function(req, preprocess) {
   var ivr = ivr_factory.create(JSON.parse(req.session.ivr));
   if (preprocess) {
+    console.log(ivr.current_node.id);
     console.log(JSON.stringify(ivr.current_node.run));
     console.log(JSON.stringify(ivr.current_node.split));
     console.log(JSON.stringify(ivr.current_node.gather));

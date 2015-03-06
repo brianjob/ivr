@@ -5,6 +5,7 @@ module.exports.run = function() {
   if (!this.redirect) { throw new Error('gather node must have redirect'); }
   if (!this.numDigits && !this.finishOnKey) { throw new Error('gather node must have either numDigits or finishOnKey'); }
   
+  var self = this;
   this.ivr.twiml.gather({
     action      : '/gather',
     timeout     : this.timeout || this.ivr.default_timeout,
@@ -12,8 +13,8 @@ module.exports.run = function() {
     finsihOnKey : this.finishOnKey
   }, function() {
     this.say({
-      voice    : this.voice    || this.ivr.default_voice,
-      language : this.language || this.ivr.default_language
+      voice    : this.voice    || self.ivr.default_voice,
+      language : this.language || self.ivr.default_language
     }, this.prompt);
   });
 

@@ -25,5 +25,7 @@ module.exports.run = function() {
 
 module.exports.gather = function(input) {
   lib[this.action](this.ivr.model, input);
+  console.log('gather current node: ' + this.id);
+  console.log('gather current redirect: ' + this.redirect);
   this.ivr.current_node = this.ivr.getNode(this.redirect);
 };

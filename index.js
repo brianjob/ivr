@@ -17,15 +17,6 @@ app.use(session({
   saveUninitialized : false
 }));
 
-app.use(function(err, req, res, next) {
-  if (err) {
-    console.error(err.stack);
-    res.status(500).send(err.message);
-  } else {
-    next();
-  }
-});
-
 app.listen(port, function() {
   console.log('listening on port ' + port);
 });

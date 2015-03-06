@@ -1,0 +1,33 @@
+* IVR Settings Document
+The IVR settings document is a JSON document that describes the behavior of a Healpay custom IVR solution.
+There are two types of settings defined in the document: system settings, and node settings.
+
+** System Settings
+System Settings are settings that pertain to the IVR system as a whole.
+Things like the default language, and phone number for accessing the IVR are examples of system settings.
+These settings are defined at the root level of the document.
+| *Name*           | *Required/Optional* | *Description*                                                                | *Possible Values*                             |
+| domain           | required            | The unique identifier of the agency using the IVR                            | any string                                    |
+| access_number    | required            | The phone number users dial to access the IVR                                | {+xxxxxxxxxxx} where x is any integer         |
+| default_voice    | optional            | The voice that will be used if no voice is specified in a node               | see [[https://www.twilio.com/docs/api/twiml/say]] |
+| default_language | optional            | The language that will be used if no language is specified in a node         | see [[https://www.twilio.com/docs/api/twiml/say]] |
+| default_timeout  | optional            | The timout in seconds that will be used if no timeout is specified in a node | any integer                                   |
+
+** Node Settings
+
+*** What is a node?
+The IVR can be thought of as a collection of nodes in a graph. See [[https://en.wikipedia.org/wiki/Graph_theory]] if you are unfamiliar with this concept.
+Each node can be though of as a point of interaction between the user and IVR. 
+
+*** Node Method
+Each node has a method, which defines the nodes general behavior. The method types are defined as such:
+| *Name* | *Description*                                                                                                                     |
+| Say    | Simply reads a predefined string of text to the user. Content strings can by static or dynamic using a handlebars style template. |
+| Gather | Takes input from the user's touch-tone keypad and performs an action on said input.                                               |
+| Split  | Takes input from the user's touch-tone keypad and redirects to another node based on the user's input.                            |
+| Hangup | Ends the call.                                                                                                                    |
+
+*** General Node Settings
+These settings are applicable to nodes of most if not all methods
+| *Name* | *Required/Optional* | *Description* | *Possible Values* |
+|        |                     |               |                   |

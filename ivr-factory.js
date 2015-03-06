@@ -48,7 +48,6 @@ var createIVR = function(spec) {
   console.log('createIVR()');
   if (!spec.domain) { throw new Error('IVR must have domain'); }
   if (!spec.access_number) { throw new Error('IVR must have access_number'); }
-  if (!spec.operator_number) { throw new Error('IVR must have operator_number'); }
   if (! (spec.nodes && spec.nodes.length > 0) ) { 
     throw new Error('IVR must have at least 1 node defined'); 
   }
@@ -56,7 +55,6 @@ var createIVR = function(spec) {
   var ivr = {
     domain           : spec.domain,
     access_number    : spec.access_number,
-    operator_number  : spec.operator_number,
     default_voice    : spec.default_voice,
     default_language : spec.default_language,
     default_timeout  : spec.default_timeout,

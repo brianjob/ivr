@@ -10,6 +10,7 @@ module.exports.newSession = function(req) {
   return sapp.ivr_settings(req.query.To).then(function(settings) {
     console.log('SETTINGS: ' + JSON.stringify(settings, undefined, 2));
     var ivr = ivr_factory.create(settings);
+    req.session.ivr = ivr;
     return ivr.run();
   });
 };

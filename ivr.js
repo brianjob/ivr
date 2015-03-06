@@ -11,6 +11,7 @@ module.exports.newSession = function(req) {
     console.log('SETTINGS: ' + JSON.stringify(settings, undefined, 2));
     var ivr = ivr_factory.create(settings);
     req.session.ivr = ivr.toJSON();
+    console.log('newSession ivr: ' + req.session.ivr);
     return ivr.run();
   });
 };
@@ -24,6 +25,7 @@ module.exports.resumeSession = function(req) {
 };
 
 module.exports.gather = function(req) {
+  console.log('gather session ivr: ' + req.session.ivr);
   return ivr_factory.create(req.session.ivr).gather();
 };
 

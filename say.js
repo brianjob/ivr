@@ -1,6 +1,7 @@
 var bars = require('handlebars');
 
 module.exports.run = function(model) {
+  console.log('SAY.RUN(): ' + this.id);
   if (!this.template) { throw new Error('say node must have template'); }
   if (!this.redirect) { throw new Error('say node must have redirect'); }
 
@@ -13,9 +14,6 @@ module.exports.run = function(model) {
   
   this.ivr.current_node = this.ivr.getNode(this.redirect);
   
-  console.log('getting next node: ' + this.ivr.current_node.id);
-
   var twim = this.ivr.current_node.run(); // we can't end on a say so just call the next node's run
-  console.log('say twim: ' + twim);
   return twim;
 };

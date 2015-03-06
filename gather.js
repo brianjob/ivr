@@ -1,6 +1,7 @@
 var lib  = require('./library');
 
 module.exports.run = function() {
+  console.log('GATHER.RUN(): ' + this.id);
   if (!this.prompt) { throw new Error('gather node must have a prompt'); }
   if (!this.redirect) { throw new Error('gather node must have redirect'); }
   if (!this.numDigits && !this.finishOnKey) { throw new Error('gather node must have either numDigits or finishOnKey'); }

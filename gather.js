@@ -1,11 +1,9 @@
-var twilio = require('twilio');
-var lib    = require('./library');
+var lib  = require('./library');
 
 module.exports.run = function() {
   if (!this.prompt) { throw new Error('gather node must have a prompt'); }
-  var twiml = new twilio.TwimlResponse();  
   
-  twiml.gather({
+  this.ivr.twiml.gather({
     action      : '/gather',
     timeout     : this.timeout || this.ivr.default_timeout,
     numDigits   : this.numDigits,
@@ -17,7 +15,7 @@ module.exports.run = function() {
     }, this.prompt);
   });
 
-  return twiml.toString();
+  return this.ivr.twiml.toString();
 };
 
 module.exports.gather = function(input) {

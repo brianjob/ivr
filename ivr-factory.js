@@ -1,23 +1,28 @@
-var twilio   = require('twilio');
-var bars     = require('handlebars');
-var split    = require('./split');
-var gather   = require('./gather');
-var say      = require('./say');
+var twilio = require('twilio');
+var bars   = require('handlebars');
+var split  = require('./split');
+var gather = require('./gather');
+var say    = require('./say');
+var hangup = require('./hangup');
 
 // creates a new node object based on a json spec and returns it
 var createNode = function(ivr, spec) {
-  console.log('createNode()');
-  console.log('ivr: ' + JSON.stringify(ivr, undefined, 2));
-
-  if (!spec.id)       { throw new Error('node must have id'); }
-  if (!spec.method)   { throw new Error('node must have method'); }
-  if (!spec.redirect) { throw new Error('node must have redirect'); }
+  if (!spec.id) { 
+    throw new Error('node must have id'); 
+  }
+  if (!spec.method) { 
+    throw new Error('node must have method'); 
+  }
+  if (!spec.redirect && spec.method !== 'hangup') { 
+    throw new Error('node must have redirect'); 
+  }
  
   var node = {
     ivr      : ivr,
     id       : spec.id,
     method   : spec.method,
-    template : spec.template
+    template : spec.template,
+    redirect : spec.redirect
   };
 
   if (node.method === 'say') {
@@ -29,6 +34,8 @@ var createNode = function(ivr, spec) {
     if (!spec.invalid_input_redirect) { throw new Error('split node must define invalid_input_redirect'); }
     node.run = split.run;
     node.split = split.split;
+  } else if (node.method === 'hangup') {
+    node.run = hangup.run;
   } else {
     throw new Error('unknown node method');
   }
@@ -56,6 +63,7 @@ var createIVR = function(spec) {
     model           : {
       domain : spec.domain
     },
+    twiml           : new twilio.TwimlResponse(),
     run             : function() {
       return this.current_node.run();
     },

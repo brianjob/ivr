@@ -13,5 +13,9 @@ module.exports.run = function(model) {
   
   this.ivr.current_node = this.ivr.getNode(this.redirect);
   
-  return this.ivr.current_node.run(); // we can't end on a say so just call the next node's run
+  console.log('getting next node: ' + this.ivr.current_node.id);
+
+  var twim = this.ivr.current_node.run(); // we can't end on a say so just call the next node's run
+  console.log('say twim: ' + twim);
+  return twim;
 };

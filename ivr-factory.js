@@ -24,7 +24,8 @@ var createNode = function(ivr, spec) {
     numDigits   : spec.numDigits,
     finishOnKey : spec.finishOnKey,
     voice       : spec.voice,
-    language    : spec.language
+    language    : spec.language,
+    action      : spec.action
   };
 
   if (node.method === 'say') {

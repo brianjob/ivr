@@ -22,17 +22,34 @@ module.exports.newSession = function(req) {
 };
 
 // EFFECTS:
+// 1. constructs a new ivr object from a session
+// 2. runs any preprocess method on the ivr (split, gather, etc.) if applicable
+// 3. runs the next node
+// 4. updates the session state
+// 5. returns the twiml
+var resumeSessionHelper = function(req, preprocess) {
+  var ivr = ivr_factory.create(JSON.parse(req.session.ivr));
+  if (preprocess) {
+    ivr.current_node[preprocess](req.body);
+  }
+  var response = ivr.run();
+  req.session.ivr = ivr.toJSON();
+  return response;
+};
+
+// EFFECTS:
 // 1. Initializes an existing ivr session from a request object's session data
 // 2. Executes instructions for the current node
 // 3. Updates the current node
 module.exports.resumeSession = function(req) {
-  return ivr_factory.create(req.session.ivr).run();
+  return resumeSessionHelper(req);
 };
 
 module.exports.gather = function(req) {
-  return ivr_factory.create(JSON.parse(req.session.ivr)).current_node.gather(req.body);
+  return resumeSessionHelper(req, 'gather');
 };
 
 module.exports.split = function(req) {
-  return ivr_factory.create(JSON.parse(req.session.ivr)).current_node.split(req.body);
+  return resumeSessionHelper(req, 'split');
 };
+

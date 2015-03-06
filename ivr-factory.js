@@ -80,6 +80,7 @@ var createIVR = function(spec) {
       }
       return result[0];
     }, toJSON       : function() {
+      console.log('CURRENT NODE: ' + this.current_node.id);
       spec.current_node_id = this.current_node.id;
       return JSON.stringify(spec);
     }

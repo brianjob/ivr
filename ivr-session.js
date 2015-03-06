@@ -15,9 +15,10 @@ module.exports.newSession = function(req) {
   return sapp.ivr_settings(req.query.To).then(function(settings) {
     console.log('SETTINGS: ' + JSON.stringify(settings, undefined, 2));
     var ivr = ivr_factory.create(settings);
+    var result = ivr.run();
     req.session.ivr = ivr.toJSON();
     console.log('newSession ivr: ' + req.session.ivr);
-    return ivr.run();
+    return result;
   });
 };
 

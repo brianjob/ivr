@@ -26,9 +26,9 @@ module.exports.resumeSession = function(req) {
 
 module.exports.gather = function(req) {
   console.log('gather session ivr: ' + req.session.ivr);
-  return ivr_factory.create(req.session.ivr).gather();
+  return ivr_factory.create(req.session.ivr).gather(req);
 };
 
 module.exports.split = function(req) {
-  return ivr_factory.create(req.session.ivr).split();
+  return ivr_factory.create(req.session.ivr).split(req);
 };

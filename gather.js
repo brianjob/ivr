@@ -5,6 +5,8 @@ module.exports.run = function() {
   if (!this.redirect) { throw new Error('gather node must have redirect'); }
   if (!this.numDigits && !this.finishOnKey) { throw new Error('gather node must have either numDigits or finishOnKey'); }
   
+  console.log('prompt: ' + this.prompt);
+
   var self = this;
   this.ivr.twiml.gather({
     action      : '/gather',

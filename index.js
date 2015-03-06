@@ -36,11 +36,9 @@ app.post('/', function(req, res) {
 });
 
 app.post('/gather', function(req, res) {
-  ivr_session.gather(req);
-  res.redirect('/');
+  res.send(ivr_session.gather(req));
 });
 
 app.post('/split', function(req, res) {
-  ivr_session.split(req);
-  res.redirect('/');
+  res.send(ivr_session.split(req));
 });

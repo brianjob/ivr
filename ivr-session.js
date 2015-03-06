@@ -30,10 +30,9 @@ module.exports.resumeSession = function(req) {
 };
 
 module.exports.gather = function(req) {
-  console.log('gather session ivr: ' + req.session.ivr);
-  return ivr_factory.create(req.session.ivr).current_node.gather(req.body);
+  return ivr_factory.create(JSON.parse(req.session.ivr)).current_node.gather(req.body);
 };
 
 module.exports.split = function(req) {
-  return ivr_factory.create(req.session.ivr).current_node.split(req.body);
+  return ivr_factory.create(JSON.parse(req.session.ivr)).current_node.split(req.body);
 };

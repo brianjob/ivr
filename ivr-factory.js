@@ -30,6 +30,7 @@ var createNode = function(ivr, spec) {
   if (node.method === 'say') {
     node.run = say.run;
   } else if (node.method === 'gather') {
+    console.log(node.id + ' got gather');
     node.run = gather.run;
     node.gather = gather.gather;
   } else if (node.method === 'split') {

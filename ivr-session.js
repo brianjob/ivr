@@ -26,6 +26,7 @@ module.exports.newSession = function(req) {
 // 4. updates the session state
 // 5. returns the twiml
 var resumeSessionHelper = function(req, preprocess) {
+  console.log('BODY: ' + JSON.stringify(req.body));
   var ivr = ivr_factory.create(JSON.parse(req.session.ivr));
   if (preprocess) {
     ivr.current_node[preprocess](req.body.Digits);

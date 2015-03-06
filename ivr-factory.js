@@ -15,12 +15,16 @@ var createNode = function(ivr, spec) {
   }
  
   var node = {
-    ivr      : ivr,
-    id       : spec.id,
-    method   : spec.method,
-    template : spec.template,
-    redirect : spec.redirect,
-    prompt   : spec.prompt
+    ivr         : ivr,
+    id          : spec.id,
+    method      : spec.method,
+    template    : spec.template,
+    redirect    : spec.redirect,
+    prompt      : spec.prompt,
+    numDigits   : spec.numDigits,
+    finishOnKey : spec.finishOnKey,
+    voice       : spec.voice,
+    language    : spec.language
   };
 
   if (node.method === 'say') {

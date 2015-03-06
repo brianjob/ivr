@@ -54,13 +54,13 @@ var createIVR = function(spec) {
   }
 
   var ivr = {
-    domain          : spec.domain,
-    access_number   : spec.access_number,
-    operator_number : spec.operator_number,
-    voice           : spec.voice,
-    language        : spec.language,
-    default_timeout : spec.default_timeout,
-    model           : {
+    domain           : spec.domain,
+    access_number    : spec.access_number,
+    operator_number  : spec.operator_number,
+    default_voice    : spec.default_voice,
+    default_language : spec.default_language,
+    default_timeout  : spec.default_timeout,
+    model            : {
       domain : spec.domain
     },
     twiml           : new twilio.TwimlResponse(),

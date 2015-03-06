@@ -19,7 +19,8 @@ var createNode = function(ivr, spec) {
     id       : spec.id,
     method   : spec.method,
     template : spec.template,
-    redirect : spec.redirect
+    redirect : spec.redirect,
+    prompt   : spec.prompt
   };
 
   if (node.method === 'say') {

@@ -8,17 +8,18 @@ Things like the default language, and phone number for accessing the IVR are exa
 These settings are defined at the root level of the document.
 | *Name*           | *Required/Optional* | *Description*                                                                | *Possible Values*                             |
 | domain           | required            | The unique identifier of the agency using the IVR                            | any string                                    |
-| access_number    | required            | The phone number users dial to access the IVR                                | {+xxxxxxxxxxx} where x is any integer         |
-| default_voice    | optional            | The voice that will be used if no voice is specified in a node               | see [[https://www.twilio.com/docs/api/twiml/say]] |
-| default_language | optional            | The language that will be used if no language is specified in a node         | see [[https://www.twilio.com/docs/api/twiml/say]] |
-| default_timeout  | optional            | The timout in seconds that will be used if no timeout is specified in a node | any integer                                   |
+| access\_number   | required            | The phone number users dial to access the IVR                                | {+xxxxxxxxxxx} where x is any integer         |
+| default\_voice   | optional            | The voice that will be used if no voice is specified in a node               | see [[https://www.twilio.com/docs/api/twiml/say]] |
+| default\_language | optional            | The language that will be used if no language is specified in a node         | see [[https://www.twilio.com/docs/api/twiml/say]] |
+| default\_timeout | optional            | The timout in seconds that will be used if no timeout is specified in a node | any integer                                   |
 
 ** Node Settings
 
 *** What is a node?
-The IVR can be thought of as a collection of nodes in a graph. See [[https://en.wikipedia.org/wiki/Graph_theory]] if you are unfamiliar with this concept.
+The IVR can be thought of as a collection of nodes in a graph. See [[https://en.wikipedia.org/wiki/Graph_theory][this wiki]] if you are unfamiliar with this concept.
 Each node can be though of as a point of interaction between the user and IVR. 
 
+#+NAME: Node Method
 *** Node Method
 Each node has a method, which defines the nodes general behavior. The method types are defined as such:
 | *Name* | *Description*                                                                                                                     |
@@ -29,5 +30,41 @@ Each node has a method, which defines the nodes general behavior. The method typ
 
 *** General Node Settings
 These settings are applicable to nodes of most if not all methods
-| *Name* | *Required/Optional* | *Description* | *Possible Values* |
-|        |                     |               |                   |
+| *Name*   | *Required/Optional* | *Description*                                       | *Possible Values*                             |
+| id       | required            | unique identifier for the node                      | any string                                    |
+| method   | required            | see [[Node Method]]                                     | see [[Node Method]]                               |
+| voice    | optional            | the twilio voice that will be used for this node    | see [[https://www.twilio.com/docs/api/twiml/say]] |
+| language | optional            | the twilio language that will be used for this node | see [[https://www.twilio.com/docs/api/twiml/say]] |
+
+*** Say Settings
+These settings are applicable only to say nodes
+| *Name*   | *Required/Optional* | *Description*                                     | *Possible Values*                                                           |
+| template | required            | handlebars template describing what will be said  | any valid handlebars template (see [[https://github.com/wycats/handlebars.js]]) |
+| redirect | required            | the id of the node to redirect to upon completion | the id of any other node in the ivr                                         |
+
+*** Gather Settings
+These settings are applicable only to gather nodes
+| *Name*      | *Required/Optional*              | *Description*                                                             | *Possible Values*                                                |
+| prompt      | required                         | the string that will be read before accepting user input                  | any string (note: currently not supporting handlebars templates) |
+| timeout     | optional                         | the number of seconds the system will wait for input before hanging up    | any positive integer (values over 20 are discouraged)            |
+| numDigits   | optional if finishOnKey defined  | the number of digits of user input to accept                              | any positive integer (values over 20 are discouraged)            |
+| finishOnKey | optional if numDigits is defined | the system will stop collecting user input when the user presses this key | any of the following: [0, 1, 2, 4, 5, 6, 7, 8, 9, *, #]          |
+| redirect    | required                         | the id of the node to redirect to upon completion                         | the id of any other node in the ivr                              |
+| action      | required                         | the name of an action defined in the HealPay IVR library                  | the name of any action in the HealPay IVR library                |
+
+*** Split Settings
+These settings are applicable only to split nodes
+| *Name* | *Required/Optional* | *Description*                                                               | *Possible Values*                                     |
+| timout | required            | the number of seconds the system will wait for user input before hanging up | any positive integer (values over 20 are discouraged) |
+| paths  | required            | a JSON array of objects describing the possible options (see [[Paths]])         | see [[Paths]]                                             |
+
+#+NAME: Paths
+**** Paths
+The paths setting of a split node is defined as an array of JSON objects. The array must contain at least 1 object and at most 10 objects.
+Each path object is defined as such:
+| *Name*   | *Required/Optional* | *Description*                                               | *Possible Values*             |
+| key      | required            | the key pressed by the user to choose this path             | any single digit integer      |
+| prompt   | required            | what will be read to the user as a description of this path | any string                    |
+| redirect | required            | the id of the node to redirect to if this path is chosen    | the id of any node in the ivr |
+
+These paths will be read to the user in the form of: "Press [key] to [prompt]"

@@ -2,6 +2,8 @@ var bars = require('handlebars');
 
 module.exports.run = function(model) {
   if (!this.template) { throw new Error('say node must have template'); }
+  if (!this.redirect) { throw new Error('say node must have redirect'); }
+
   var template = bars.compile(this.template);
 
   this.ivr.twiml.say({

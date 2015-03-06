@@ -13,9 +13,6 @@ var createNode = function(ivr, spec) {
   if (!spec.method) { 
     throw new Error('node must have method'); 
   }
-  if (!spec.redirect && spec.method !== 'hangup') { 
-    throw new Error('node must have redirect'); 
-  }
  
   var node = {
     ivr      : ivr,

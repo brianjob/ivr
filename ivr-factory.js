@@ -91,7 +91,7 @@ var createIVR = function(spec) {
   ivr.nodes = spec.nodes.map(function(elt) { return createNode(ivr, elt); });
 
   // if a current node exists, set it, otherwise it should be the first node
-  if (spec.current_node) {
+  if (spec.current_node_id) {
     ivr.current_node = ivr.getNode(spec.current_node_id);
   } else {
     ivr.current_node = ivr.nodes[0];

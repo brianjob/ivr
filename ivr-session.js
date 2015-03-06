@@ -1,5 +1,10 @@
+// ivr-session.js
+// Author:      Brian Barton
+// Description: This module binds session objects to ivr objects
+
 var sapp    = require('./sapp'),
 ivr_factory = require('./ivr-factory');
+
 // EFFECTS:
 // 1. Looks up ivr settings based on number from request
 // 2. Creates a new ivr session
@@ -26,9 +31,9 @@ module.exports.resumeSession = function(req) {
 
 module.exports.gather = function(req) {
   console.log('gather session ivr: ' + req.session.ivr);
-  return ivr_factory.create(req.session.ivr).gather(req);
+  return ivr_factory.create(req.session.ivr).current_node.gather(req.body);
 };
 
 module.exports.split = function(req) {
-  return ivr_factory.create(req.session.ivr).split(req);
+  return ivr_factory.create(req.session.ivr).current_node.split(req.body);
 };

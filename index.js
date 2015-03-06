@@ -2,7 +2,7 @@ var express = require('express'),
     session = require('express-session'),
  bodyParser = require('body-parser'),
      assert = require('assert'),
-        ivr = require('./ivr');
+ivr_session = require('./ivr-session');
 
 assert(process.env.ACCOUNTS_HOST, 'ACCOUNTS_HOST must be set');
 assert(process.env.SESSION_SECRET, 'SESSION_SECRET must be set');
@@ -23,7 +23,7 @@ app.listen(port, function() {
 
 // new ivr session
 app.get('/', function(req, res) {
-  ivr.newSession(req).then(function(response) {
+  ivr_session.newSession(req).then(function(response) {
     res.send(response);
   }).catch(function(err) {
     console.error(err.stack);
@@ -32,15 +32,15 @@ app.get('/', function(req, res) {
 });
 
 app.post('/', function(req, res) {
-  res.send(ivr.resumeSession(req));
+  res.send(ivr_session.resumeSession(req));
 });
 
 app.post('/gather', function(req, res) {
-  ivr.gather(req.body);
+  ivr_session.gather(req);
   res.redirect('/');
 });
 
 app.post('/split', function(req, res) {
-  ivr.split(req.body);
+  ivr_session.split(req);
   res.redirect('/');
 });

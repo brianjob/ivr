@@ -15,9 +15,9 @@ module.exports.run = function() {
     finsihOnKey : this.finishOnKey
   }, function() {
     this.say({
-      voice    : this.voice    || self.ivr.default_voice,
-      language : this.language || self.ivr.default_language
-    }, this.prompt);
+      voice    : self.voice    || self.ivr.default_voice,
+      language : self.language || self.ivr.default_language
+    }, self.prompt);
   });
 
   return this.ivr.twiml.toString();

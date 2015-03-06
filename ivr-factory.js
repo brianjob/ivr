@@ -47,7 +47,6 @@ var createNode = function(ivr, spec) {
 
 // creates a new ivr object based on a json spec and returns it
 var createIVR = function(spec) {
-  console.log('createIVR()');
   if (!spec.domain) { throw new Error('IVR must have domain'); }
   if (!spec.access_number) { throw new Error('IVR must have access_number'); }
   if (! (spec.nodes && spec.nodes.length > 0) ) { 
@@ -79,6 +78,9 @@ var createIVR = function(spec) {
 	throw new Error('no node with that id exists');
       }
       return result[0];
+    }, toJSON       : function() {
+      spec.current_node_id = this.current_node.id;
+      return JSON.stringify(spec);
     }
   };
   
@@ -87,7 +89,7 @@ var createIVR = function(spec) {
 
   // if a current node exists, set it, otherwise it should be the first node
   if (spec.current_node) {
-    ivr.current_node = ivr.getNode(spec.current_node.id);
+    ivr.current_node = ivr.getNode(spec.current_node_id);
   } else {
     ivr.current_node = ivr.nodes[0];
   }

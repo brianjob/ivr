@@ -1,16 +1,18 @@
 var bars = require('handlebars');
 
-module.exports.run = function(model) {
+module.exports.run = function() {
   console.log('SAY.RUN(): ' + this.id);
   if (!this.template) { throw new Error('say node must have template'); }
   if (!this.redirect) { throw new Error('say node must have redirect'); }
 
   var template = bars.compile(this.template);
 
+  console.log('SAY MODEL: ' + JSON.stringify(this.ivr.model));
+
   this.ivr.twiml.say({
     voice    : this.voice    || this.ivr.default_voice,
     language : this.language || this.ivr.default_language,
-  }, template(model));
+  }, template(this.ivr.model));
   
   this.ivr.current_node = this.ivr.getNode(this.redirect);
   

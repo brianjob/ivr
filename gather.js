@@ -5,8 +5,6 @@ module.exports.run = function() {
   if (!this.prompt) { throw new Error('gather node must have a prompt'); }
   if (!this.redirect) { throw new Error('gather node must have redirect'); }
   if (!this.numDigits && !this.finishOnKey) { throw new Error('gather node must have either numDigits or finishOnKey'); }
-  
-  console.log('gather current node ' + this.ivr.current_node.id);
 
   var self = this;
   this.ivr.twiml.gather({
@@ -26,7 +24,5 @@ module.exports.run = function() {
 
 module.exports.gather = function(input) {
   lib[this.action](this.ivr.model, input);
-  console.log('gather current node: ' + this.id);
-  console.log('gather current redirect: ' + this.redirect);
   this.ivr.current_node = this.ivr.getNode(this.redirect);
 };

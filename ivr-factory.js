@@ -81,7 +81,9 @@ var createIVR = function(spec) {
       }
       return result[0];
     }, toJSON       : function() {
-      spec.current_node_id = this.current_node.id;
+      var json = spec;
+      json.current_node_id = this.current_node.id;
+      json.model = this.model;
       return JSON.stringify(spec);
     }
   };

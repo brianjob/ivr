@@ -33,7 +33,7 @@ var createNode = function(ivr, spec) {
   //   paths       : spec.paths
   // };
 
-  var node = spec;
+  var node = JSON.parse(JSON.stringify(spec));
   node.ivr = ivr;
 
   if (node.method === 'say') {

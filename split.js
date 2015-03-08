@@ -9,14 +9,15 @@ module.exports.run = function() {
     return a + ' ' + b;
   });
 
+  var self = this;
   this.ivr.twiml.gather({
     action    : '/split',
     timeout   : this.timeout || this.ivr.default_timout,
     numDigits : 1
   }, function() {
     this.say({
-      voice    : this.voice    || this.ivr.default_voice,
-      language : this.language || this.ivr.default_language
+      voice    : self.voice    || self.ivr.default_voice,
+      language : self.language || self.ivr.default_language
     }, prompt);
   });
   

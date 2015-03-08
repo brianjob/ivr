@@ -1,3 +1,7 @@
+// ivr-factory.js
+// Author:      Brian Barton
+// Description: Factory that takes a JSON specification and returns an IVR object
+
 var twilio = require('twilio');
 var bars   = require('handlebars');
 var split  = require('./split');
@@ -7,31 +11,34 @@ var hangup = require('./hangup');
 
 // creates a new node object based on a json spec and returns it
 var createNode = function(ivr, spec) {
-  if (!spec.id) { 
-    throw new Error('node must have id'); 
+  if (!spec.id) {
+    throw new Error('node must have id');
   }
-  if (!spec.method) { 
-    throw new Error('node must have method'); 
+  if (!spec.method) {
+    throw new Error('node must have method');
   }
- 
-  var node = {
-    ivr         : ivr,
-    id          : spec.id,
-    method      : spec.method,
-    template    : spec.template,
-    redirect    : spec.redirect,
-    prompt      : spec.prompt,
-    numDigits   : spec.numDigits,
-    finishOnKey : spec.finishOnKey,
-    voice       : spec.voice,
-    language    : spec.language,
-    action      : spec.action
-  };
+
+  // var node = {
+  //   ivr         : ivr,
+  //   id          : spec.id,
+  //   method      : spec.method,
+  //   template    : spec.template,
+  //   redirect    : spec.redirect,
+  //   prompt      : spec.prompt,
+  //   numDigits   : spec.numDigits,
+  //   finishOnKey : spec.finishOnKey,
+  //   voice       : spec.voice,
+  //   language    : spec.language,
+  //   action      : spec.action,
+  //   paths       : spec.paths
+  // };
+
+  var node = spec;
+  spec.ivr = ivr;
 
   if (node.method === 'say') {
     node.run = say.run;
   } else if (node.method === 'gather') {
-    console.log(node.id + ' got gather');
     node.run = gather.run;
     node.gather = gather.gather;
   } else if (node.method === 'split') {

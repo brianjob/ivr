@@ -26,7 +26,6 @@ module.exports.newSession = function(req) {
 // 4. updates the session state
 // 5. returns the twiml
 var resumeSessionHelper = function(req, preprocess) {
-  console.log('BODY: ' + JSON.stringify(req.body));
   var ivr = ivr_factory.create(JSON.parse(req.session.ivr));
   if (preprocess) {
     ivr.current_node[preprocess](req.body.Digits);
@@ -36,10 +35,6 @@ var resumeSessionHelper = function(req, preprocess) {
   return response;
 };
 
-// EFFECTS:
-// 1. Initializes an existing ivr session from a request object's session data
-// 2. Executes instructions for the current node
-// 3. Updates the current node
 module.exports.resumeSession = function(req) {
   return resumeSessionHelper(req);
 };

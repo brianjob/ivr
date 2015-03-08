@@ -34,7 +34,7 @@ var createNode = function(ivr, spec) {
   // };
 
   var node = spec;
-  spec.ivr = ivr;
+  node.ivr = ivr;
 
   if (node.method === 'say') {
     node.run = say.run;
@@ -91,7 +91,7 @@ var createIVR = function(spec) {
       var json = spec;
       json.current_node_id = this.current_node.id;
       json.model = this.model;
-      return JSON.stringify(spec);
+      return JSON.stringify(json);
     }
   };
   

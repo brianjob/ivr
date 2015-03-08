@@ -30,9 +30,9 @@ module.exports.split = function(input) {
   })[0];
 
   if (result) {
-    this.ivr.current_node = result.redirect;
+    this.ivr.current_node = this.ivr.getNode(result.redirect);
   } else {
     // user input did not match one of the available paths
-    this.ivr.current_node = this.invalid_input_redirect;
+    this.ivr.current_node = this.ivr.getNode(this.invalid_input_redirect);
   }   
 };

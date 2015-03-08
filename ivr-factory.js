@@ -84,7 +84,7 @@ var createIVR = function(spec) {
 	throw new Error('multiple nodes with that id exist');
       }
       if (result < 1) {
-	throw new Error('no node with that id exists');
+	throw new Error('no node with id: ' + id + ' exists');
       }
       return result[0];
     }, toJSON       : function() {

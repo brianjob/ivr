@@ -7,6 +7,7 @@ var bars   = require('handlebars');
 var split  = require('./split');
 var gather = require('./gather');
 var say    = require('./say');
+var action = require('./action');
 var hangup = require('./hangup');
 
 // creates a new node object based on a json spec and returns it
@@ -17,21 +18,6 @@ var createNode = function(ivr, spec) {
   if (!spec.method) {
     throw new Error('node must have method');
   }
-
-  // var node = {
-  //   ivr         : ivr,
-  //   id          : spec.id,
-  //   method      : spec.method,
-  //   template    : spec.template,
-  //   redirect    : spec.redirect,
-  //   prompt      : spec.prompt,
-  //   numDigits   : spec.numDigits,
-  //   finishOnKey : spec.finishOnKey,
-  //   voice       : spec.voice,
-  //   language    : spec.language,
-  //   action      : spec.action,
-  //   paths       : spec.paths
-  // };
 
   var node = JSON.parse(JSON.stringify(spec));
   node.ivr = ivr;
@@ -45,6 +31,8 @@ var createNode = function(ivr, spec) {
     if (!spec.invalid_input_redirect) { throw new Error('split node must define invalid_input_redirect'); }
     node.run = split.run;
     node.split = split.split;
+  } else if (node.method === 'action') {
+    node.run = action.run;
   } else if (node.method === 'hangup') {
     node.run = hangup.run;
   } else {

@@ -53,16 +53,17 @@ var createIVR = function(spec) {
   if (!spec.default_error_redirect) { throw new Error('IVR must have default_error_redirect'); }
 
   var ivr = {
-    domain           : spec.domain,
-    access_number    : spec.access_number,
-    default_voice    : spec.default_voice,
-    default_language : spec.default_language,
-    default_timeout  : spec.default_timeout,
-    model            : {
+    domain                 : spec.domain,
+    access_number          : spec.access_number,
+    default_voice          : spec.default_voice,
+    default_language       : spec.default_language,
+    default_timeout        : spec.default_timeout,
+    default_error_redirect : spec.default_error_redirect,
+    model                  : {
       domain : spec.domain
     },
-    twiml           : new twilio.TwimlResponse(),
-    run             : function() {
+    twiml : new twilio.TwimlResponse(),
+    run   : function() {
       var self = this;
       var handleErr = function(err) {
 	console.error(err);
@@ -84,7 +85,7 @@ var createIVR = function(spec) {
 	return handleErr(err);
       }
     },
-    getNode         : function(id) {
+    getNode : function(id) {
       var result = this.nodes.filter(function(elt) {
 	return elt.id === id;
       });

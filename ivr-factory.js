@@ -50,6 +50,7 @@ var createIVR = function(spec) {
   if (! (spec.nodes && spec.nodes.length > 0) ) { 
     throw new Error('IVR must have at least 1 node defined'); 
   }
+  if (!spec.default_error_redirect) { throw new Error('IVR must have default_error_redirect'); }
 
   var ivr = {
     domain           : spec.domain,
@@ -62,10 +63,11 @@ var createIVR = function(spec) {
     },
     twiml           : new twilio.TwimlResponse(),
     run             : function() {
+      var self = this;
       var handleErr = function(err) {
 	console.error(err);
-	this.model.error = err;
-	this.current_node = this.current_node.error_redirect || this.default_error_redirect;
+	self.model.error = err;
+	self.current_node = self.current_node.error_redirect || self.default_error_redirect;
 	return this.run();
       };
 

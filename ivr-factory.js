@@ -69,12 +69,12 @@ var createIVR = function(spec) {
 	console.error(err);
 	self.model.error = err;
 	self.current_node = self.current_node.error_redirect || self.default_error_redirect;
-	return self.run();
+	return self.current_node.run();
       };
 
       try {
 	var result = this.current_node.run();
-	
+
 	if (Q.isPromise(result)) {
 	  return result.catch(handleErr);
 	}

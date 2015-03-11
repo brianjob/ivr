@@ -68,7 +68,7 @@ var createIVR = function(spec) {
       var handleErr = function(err) {
 	console.error(err);
 	self.model.error = err;
-	self.current_node = self.current_node.error_redirect || self.default_error_redirect;
+	self.current_node = self.getNode(self.current_node.error_redirect || self.default_error_redirect);
 	console.log('CURRENT NODE');
 	console.dir(self.current_node);
 	return self.current_node.run();

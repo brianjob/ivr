@@ -34,13 +34,19 @@ app.get('/', function(req, res) {
 });
 
 app.post('/', function(req, res) {
-  res.send(ivr_session.resumeSession(req));
+  res.send(ivr_session.resumeSession(req)).then(function(result) {
+    res.send(result);
+  });
 });
 
 app.post('/gather', function(req, res) {
-  res.send(ivr_session.gather(req));
+  ivr_session.gather(req).then(function(result) {  
+    res.send(result);
+  });
 });
 
 app.post('/split', function(req, res) {
-  res.send(ivr_session.split(req));
+  ivr_session.split(req).then(function(result) {
+    res.send(result);
+  });
 });

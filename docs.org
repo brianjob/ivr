@@ -6,12 +6,13 @@ There are two types of settings defined in the document: system settings, and no
 System Settings are settings that pertain to the IVR system as a whole.
 Things like the default language, and phone number for accessing the IVR are examples of system settings.
 These settings are defined at the root level of the document.
-| *Name*           | *Required/Optional* | *Description*                                                                | *Possible Values*                             |
-| domain           | required            | The unique identifier of the agency using the IVR                            | any string                                    |
-| access\_number   | required            | The phone number users dial to access the IVR                                | {+xxxxxxxxxxx} where x is any integer         |
-| default\_voice   | optional            | The voice that will be used if no voice is specified in a node               | see [[https://www.twilio.com/docs/api/twiml/say]] |
+| *Name*            | *Required/Optional* | *Description*                                                                | *Possible Values*                             |
+| domain            | required            | The unique identifier of the agency using the IVR                            | any string                                    |
+| access\_number    | required            | The phone number users dial to access the IVR                                | {+xxxxxxxxxxx} where x is any integer         |
+| default\_voice    | optional            | The voice that will be used if no voice is specified in a node               | see [[https://www.twilio.com/docs/api/twiml/say]] |
 | default\_language | optional            | The language that will be used if no language is specified in a node         | see [[https://www.twilio.com/docs/api/twiml/say]] |
-| default\_timeout | optional            | The timout in seconds that will be used if no timeout is specified in a node | any integer                                   |
+| default\_timeout  | optional            | The timout in seconds that will be used if no timeout is specified in a node | any integer                                   |
+| model             | optional            | JSON object representing the initial state of the ivr-session model          | any valid JSON object                         |
 
 ** Node Settings
 
@@ -31,11 +32,12 @@ Each node has a method, which defines the nodes general behavior. The method typ
 
 *** General Node Settings
 These settings are applicable to nodes of most if not all methods
-| *Name*   | *Required/Optional* | *Description*                                       | *Possible Values*                             |
-| id       | required            | unique identifier for the node                      | any string                                    |
-| method   | required            | see [[Node Method]]                                     | see [[Node Method]]                               |
-| voice    | optional            | the twilio voice that will be used for this node    | see [[https://www.twilio.com/docs/api/twiml/say]] |
-| language | optional            | the twilio language that will be used for this node | see [[https://www.twilio.com/docs/api/twiml/say]] |
+| *Name*         | *Required/Optional*            | *Description*                                           | *Possible Values*                             |
+| id             | required                       | unique identifier for the node                          | any string                                    |
+| method         | required                       | see [[#sec-1-2-2][Node Method]]                                         | see [[#sec-1-2-2][Node Method]]                               |
+| voice          | optional                       | the twilio voice that will be used for this node        | see [[https://www.twilio.com/docs/api/twiml/say]] |
+| language       | optional                       | the twilio language that will be used for this node     | see [[https://www.twilio.com/docs/api/twiml/say]] |
+| error_redirect | required (optional for hangup) | the id of the node to redirect to if an error is thrown | the id of any node in the ivr                 |
 
 *** Say Settings
 These settings are applicable only to say nodes
@@ -55,15 +57,10 @@ These settings are applicable only to gather nodes
 
 *** Split Settings
 These settings are applicable only to split nodes
-| *Name* | *Required/Optional* | *Description*                                                               | *Possible Values*                                     |
-| timout | required            | the number of seconds the system will wait for user input before hanging up | any positive integer (values over 20 are discouraged) |
-| paths  | required            | a JSON array of objects describing the possible options (see [[Paths]])         | see [[Paths]]                                             |
-
-*** Action Settings
-These settings are applicable only to action nodes
-| *Name*   | *Required/Optional* | *Description*                                                 | *Possible Values*                                  |
-| action   | required            | the name of the library function to call                      | any valid library function that doesn't take input |
-| redirect | required            | the id of the node to redirect to after completing the action | the id of any other node in the ivr                |
+| *Name*                   | *Required/Optional* | *Description*                                                               | *Possible Values*                                     |
+| timeout                  | required            | the number of seconds the system will wait for user input before hanging up | any positive integer (values over 20 are discouraged) |
+| paths                    | required            | a JSON array of objects describing the possible options (see  [[sec-1-2-7-1][Paths]])        | see [[sec-1-2-7-1][Paths]]                                             |
+| invalid\_input\_redirect | required            | id of the node to redirect to if the user enters invalid input              | the id of any other node in the ivr                   |
 
 #+NAME: Paths
 **** Paths
@@ -75,3 +72,10 @@ Each path object is defined as such:
 | redirect | required            | the id of the node to redirect to if this path is chosen    | the id of any node in the ivr |
 
 These paths will be read to the user in the form of: "Press [key] to [prompt]"
+
+*** Action Settings
+These settings are applicable only to action nodes
+| *Name*   | *Required/Optional* | *Description*                                                 | *Possible Values*                                  |
+| action   | required            | the name of the library function to call                      | any valid library function that doesn't take input |
+| redirect | required            | the id of the node to redirect to after completing the action | the id of any other node in the ivr                |
+

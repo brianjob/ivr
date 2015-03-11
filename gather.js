@@ -23,6 +23,7 @@ module.exports.run = function() {
 };
 
 module.exports.gather = function(input) {
-  lib[this.action](this.ivr.model, input);
+  var result = lib[this.action](this.ivr.model, input);
   this.ivr.current_node = this.ivr.getNode(this.redirect);
+  return result;
 };

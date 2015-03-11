@@ -1,7 +1,6 @@
 // ivr-session.js
 // Author:      Brian Barton
 // Description: This module binds ivr objects to session objects
-
 var sapp    = require('./sapp'),
 ivr_factory = require('./ivr-factory');
 
@@ -24,14 +23,17 @@ module.exports.newSession = function(req) {
 // 2. runs any preprocess method on the ivr (split, gather, etc.) if applicable
 // 3. runs the next node
 // 4. updates the session state
-// 5. returns the twiml
+// 5. returns a promise resolving with the twiml
 var resumeSessionHelper = function(req, preprocess) {
   var ivr = ivr_factory.create(JSON.parse(req.session.ivr));
+  
   if (preprocess) {
     ivr.current_node[preprocess](req.body.Digits);
   }
   var response = ivr.run();
+
   req.session.ivr = ivr.toJSON();
+
   return response;
 };
 

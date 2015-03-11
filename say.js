@@ -7,8 +7,6 @@ module.exports.run = function() {
 
   var template = bars.compile(this.template);
 
-  console.log('SAY MODEL: ' + JSON.stringify(this.ivr.model));
-
   this.ivr.twiml.say({
     voice    : this.voice    || this.ivr.default_voice,
     language : this.language || this.ivr.default_language,
@@ -16,6 +14,5 @@ module.exports.run = function() {
   
   this.ivr.current_node = this.ivr.getNode(this.redirect);
   
-  var twim = this.ivr.current_node.run(); // we can't end on a say so just call the next node's run
-  return twim;
+  return this.ivr.current_node.run(); // we can't end on a say so just call the next node's run
 };

@@ -4,6 +4,7 @@
 
 var twilio = require('twilio');
 var bars   = require('handlebars');
+var Q      = require('q');
 var split  = require('./split');
 var gather = require('./gather');
 var say    = require('./say');
@@ -61,7 +62,23 @@ var createIVR = function(spec) {
     },
     twiml           : new twilio.TwimlResponse(),
     run             : function() {
-      return this.current_node.run();
+      var handleErr = function(err) {
+	console.error(err);
+	this.model.error = err;
+	this.current_node = this.current_node.error_redirect || this.default_error_redirect;
+	return this.run();
+      };
+
+      try {
+	var result = this.current_node.run();
+	
+	if (Q.isPromise(result)) {
+	  return result.catch(handleErr);
+	}
+	return Q.fcall(function() { return result; });
+      } catch (err) {
+	return handleErr(err);
+      }
     },
     getNode         : function(id) {
       var result = this.nodes.filter(function(elt) {

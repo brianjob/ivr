@@ -69,21 +69,17 @@ var createIVR = function(spec) {
 	console.error(err);
 	self.model.error = err;
 	self.current_node = self.getNode(self.current_node.error_redirect || self.default_error_redirect);
-	console.log('CURRENT NODE');
-	console.dir(self.current_node);
-	return self.current_node.run();
+	return self.current_node.run(); 
       };
 
       try {
 	var result = this.current_node.run();
 
 	if (Q.isPromise(result)) {
-	  console.log('RESULT IS PROMISE');
 	  return result.catch(handleErr);
 	}
 	return Q.fcall(function() { return result; });
       } catch (err) {
-	console.log('CATCH ERROR');
 	return handleErr(err);
       }
     },

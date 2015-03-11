@@ -4,7 +4,6 @@ var lib = require('./library');
 module.exports.run = function() {
   if (!this.action) { throw new Error('action node: ' + this.id +  ' must have an action'); }
   if (!this.redirect) { throw new Error('action node: ' + this.id + ' must have redirect'); }
-  if (!this.error_redirect) { throw new Error('action node: ' + this.id + ' must have error_redirect'); }
 
   if (!lib[this.action]) {
     throw new Error(this.action + '() is not defined in library.js');

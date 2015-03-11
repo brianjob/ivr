@@ -68,6 +68,8 @@ var createIVR = function(spec) {
 	console.error(err);
 	self.model.error = err;
 	self.current_node = self.current_node.error_redirect || self.default_error_redirect;
+	console.log('SELF');
+	console.dir(self);
 	return self.run();
       };
 

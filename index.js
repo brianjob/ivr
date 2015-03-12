@@ -33,6 +33,6 @@ app.get('/', function(req, res) {
 });
 
 app.post('/', function(req, res) {
-  res.send(ivr_session.resumeSession(req)).then(function(result) { res.send(result); });
+  ivr_session.resumeSession(req).then(function(result) { res.send(result); });
 });
 

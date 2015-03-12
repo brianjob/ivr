@@ -46,13 +46,20 @@ var run = function(input) {
     self.current_node = self.getNode(self.current_node.error_redirect || self.default_error_redirect);
     return self.current_node.run();
   };
+
+  console.log('IVR.RUN()');
+  console.dir(this);
   
   try {
     var result;
     if (this.input_pending) {
       this.input_pending = false;
       if (!this.current_node.resume) { throw new Error('ivr is pending input but ' + this.current_node.id + ' has no resume method'); }
-      result = this.current_node.resume(input).then(function() { return this.current_node.run(); });
+      result = this.current_node.resume(input).then(function() {
+	console.log('RESUME');
+	console.dir(this.current_node);
+	return this.current_node.run(); 
+      });
     } else {
       result = this.current_node.run();
     }

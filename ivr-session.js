@@ -5,7 +5,7 @@ var sapp    = require('./sapp'),
 ivr_factory = require('./ivr-factory');
 
 // EFFECTS:
-// 1. Looks up ivr settings based on number from request
+// 1. Looks up ivr settings based on phone number from request
 // 2. Creates a new ivr session
 // 3. Starts the session
 // 4. returns a promise resolving with the ivr session

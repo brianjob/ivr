@@ -1,4 +1,5 @@
 module.exports.run = function() {
+  if (!this.invalid_input_redirect) { throw new Error('split node must define invalid_input_redirect'); }
   if (! (this.paths && this.paths.length > 0) ) { 
     throw new Error('split node must have at least one path'); 
   }

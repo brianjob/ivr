@@ -6,13 +6,14 @@ There are two types of settings defined in the document: system settings, and no
 System Settings are settings that pertain to the IVR system as a whole.
 Things like the default language, and phone number for accessing the IVR are examples of system settings.
 These settings are defined at the root level of the document.
-| *Name*            | *Required/Optional* | *Description*                                                                | *Possible Values*                             |
-| domain            | required            | The unique identifier of the agency using the IVR                            | any string                                    |
-| access\_number    | required            | The phone number users dial to access the IVR                                | {+xxxxxxxxxxx} where x is any integer         |
-| default\_voice    | optional            | The voice that will be used if no voice is specified in a node               | see [[https://www.twilio.com/docs/api/twiml/say]] |
-| default\_language | optional            | The language that will be used if no language is specified in a node         | see [[https://www.twilio.com/docs/api/twiml/say]] |
-| default\_timeout  | optional            | The timout in seconds that will be used if no timeout is specified in a node | any integer                                   |
-| model             | optional            | JSON object representing the initial state of the ivr-session model          | any valid JSON object                         |
+| *Name*                 | *Required/Optional* | *Description*                                                                  | *Possible Values*                             |
+| domain                 | required            | The unique identifier of the agency using the IVR                              | any string                                    |
+| access\_number         | required            | The phone number users dial to access the IVR                                  | {+xxxxxxxxxxx} where x is any integer         |
+| default\_voice         | optional            | The voice that will be used if no voice is specified in a node                 | see [[https://www.twilio.com/docs/api/twiml/say]] |
+| default\_language      | optional            | The language that will be used if no language is specified in a node           | see [[https://www.twilio.com/docs/api/twiml/say]] |
+| default\_timeout       | optional            | The timout in seconds that will be used if no timeout is specified in a node   | any integer                                   |
+| model                  | optional            | JSON object representing the initial state of the ivr-session model            | any valid JSON object                         |
+| default_error_redirect | required            | The id of the node to redirect to if no error_redirect is defined for the node | the id of any node in the ivr                 |
 
 ** Node Settings
 
@@ -37,7 +38,7 @@ These settings are applicable to nodes of most if not all methods
 | method         | required                       | see [[#sec-1-2-2][Node Method]]                                         | see [[#sec-1-2-2][Node Method]]                               |
 | voice          | optional                       | the twilio voice that will be used for this node        | see [[https://www.twilio.com/docs/api/twiml/say]] |
 | language       | optional                       | the twilio language that will be used for this node     | see [[https://www.twilio.com/docs/api/twiml/say]] |
-| error_redirect | required (optional for hangup) | the id of the node to redirect to if an error is thrown | the id of any node in the ivr                 |
+| error_redirect | optional                       | the id of the node to redirect to if an error is thrown | the id of any node in the ivr                 |
 
 *** Say Settings
 These settings are applicable only to say nodes

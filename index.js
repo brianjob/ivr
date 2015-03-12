@@ -23,30 +23,23 @@ app.listen(port, function() {
   console.log('listening on port ' + port);
 });
 
-// new ivr session
+// new ivr session entry
 app.get('/', function(req, res) {
-  ivr_session.newSession(req).then(function(response) {
-    res.send(response);
-  }).catch(function(err) {
+  ivr_session.newSession(req).then(function(response) { res.send(response); })
+    .catch(function(err) {
     console.error(err.stack);
-    res.status(500).send('error'); // this should be replaced with a default error say node
+    res.status(500).send('error');
   });
 });
 
 app.post('/', function(req, res) {
-  res.send(ivr_session.resumeSession(req)).then(function(result) {
-    res.send(result);
-  });
+  res.send(ivr_session.resumeSession(req)).then(function(result) { res.send(result); });
 });
 
 app.post('/gather', function(req, res) {
-  ivr_session.gather(req).then(function(result) {  
-    res.send(result);
-  });
+  ivr_session.gather(req).then(function(result) { res.send(result); });
 });
 
 app.post('/split', function(req, res) {
-  ivr_session.split(req).then(function(result) {
-    res.send(result);
-  });
+  ivr_session.split(req).then(function(result) { res.send(result); });
 });

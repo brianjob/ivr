@@ -13,38 +13,66 @@ var hangup = require('./hangup');
 
 // creates a new node object based on a json spec and returns it
 var createNode = function(ivr, spec) {
-  if (!spec.id) {
-    throw new Error('node must have id');
-  }
-  if (!spec.method) {
-    throw new Error('node must have method');
-  }
+  if (!spec.id) { throw new Error('node must have id'); }
+  if (!spec.method) { throw new Error('node must have method'); }
 
   var node = JSON.parse(JSON.stringify(spec));
   node.ivr = ivr;
 
-  if (node.method === 'say') {
-    node.run = say.run;
-  } else if (node.method === 'gather') {
+  if (node.method === 'gather') {
     node.run = gather.run;
     node.gather = gather.gather;
   } else if (node.method === 'split') {
-    if (!spec.invalid_input_redirect) { throw new Error('split node must define invalid_input_redirect'); }
     node.run = split.run;
-    node.split = split.split;
-  } else if (node.method === 'action') {
-    node.run = action.run;
-  } else if (node.method === 'hangup') {
-    node.run = hangup.run;
-  } else {
-    throw new Error('unknown node method');
-  }
+    node.split = split.split; 
+  } 
+  else if (node.method === 'say')    { node.run = say.run;    }  
+  else if (node.method === 'action') { node.run = action.run; } 
+  else if (node.method === 'hangup') { node.run = hangup.run; } 
+  else { throw new Error('unknown node method'); }
 
   return node;
 };
 
+// ivr.run()
+// runs the current node
+var run = function() {
+  var self = this;
+  var handleErr = function(err) {
+    console.error(err);
+    self.model.error = err;
+    self.current_node = self.getNode(self.current_node.error_redirect || self.default_error_redirect);
+    return self.current_node.run(); 
+  };
+  
+  try {
+    var result = this.current_node.run();
+    
+    if (Q.isPromise(result)) {
+      return result.catch(handleErr);
+    }
+
+    return Q.fcall(function() { return result; });
+
+  } catch (err) { return handleErr(err); }
+};
+
+// ivr.getNode()
+// looks up a node by id
+var getNode = function(id) {
+  var result = this.nodes.filter(function(elt) {
+    return elt.id === id;
+  });
+  
+  if (result.length > 1) { throw new Error('multiple nodes with that id' + id + ' exist'); }
+
+  if (result < 1) { throw new Error('no node with id: ' + id + ' exists'); }
+
+  return result[0];
+};
+
 // creates a new ivr object based on a json spec and returns it
-var createIVR = function(spec) {
+module.exports.create = function(spec) {
   if (!spec.domain) { throw new Error('IVR must have domain'); }
   if (!spec.access_number) { throw new Error('IVR must have access_number'); }
   if (! (spec.nodes && spec.nodes.length > 0) ) { 
@@ -52,57 +80,22 @@ var createIVR = function(spec) {
   }
   if (!spec.default_error_redirect) { throw new Error('IVR must have default_error_redirect'); }
 
-  var ivr = {
-    domain                 : spec.domain,
-    access_number          : spec.access_number,
-    default_voice          : spec.default_voice,
-    default_language       : spec.default_language,
-    default_timeout        : spec.default_timeout,
-    default_error_redirect : spec.default_error_redirect,
-    model                  : {
-      domain : spec.domain
-    },
-    twiml : new twilio.TwimlResponse(),
-    run   : function() {
-      var self = this;
-      var handleErr = function(err) {
-	console.error(err);
-	self.model.error = err;
-	self.current_node = self.getNode(self.current_node.error_redirect || self.default_error_redirect);
-	return self.current_node.run(); 
-      };
-
-      try {
-	var result = this.current_node.run();
-
-	if (Q.isPromise(result)) {
-	  return result.catch(handleErr);
-	}
-	return Q.fcall(function() { return result; });
-      } catch (err) {
-	return handleErr(err);
-      }
-    },
-    getNode : function(id) {
-      var result = this.nodes.filter(function(elt) {
-	return elt.id === id;
-      });
-      
-      if (result.length > 1) {
-	throw new Error('multiple nodes with that id exist');
-      }
-      if (result < 1) {
-	throw new Error('no node with id: ' + id + ' exists');
-      }
-      return result[0];
-    }, toJSON       : function() {
-      var json = spec;
-      json.current_node_id = this.current_node.id;
-      json.model = this.model;
-      return JSON.stringify(json);
-    }
-  };
+  var ivr = JSON.parse(JSON.stringify(spec));
   
+  if (!ivr.model) { ivr.model = {}; }
+
+  ivr.model.domain = spec.domain; // if a model is provided and contains a domain, it will be overwritten here
+  ivr.twiml        = new twilio.TwimlResponse();
+  ivr.run          = run;
+  ivr.getNode      = getNode;
+
+  ivr.toJSON = function() {
+    var json = spec;
+    json.current_node_id = this.current_node.id;
+    json.model = this.model;
+    return JSON.stringify(json);
+  };
+
   // construct each node
   ivr.nodes = spec.nodes.map(function(elt) { return createNode(ivr, elt); });
 
@@ -116,4 +109,3 @@ var createIVR = function(spec) {
   return ivr;
 };  
 
-module.exports.create = createIVR;

@@ -23,6 +23,8 @@ module.exports.run = function() {
 };
 
 module.exports.gather = function(input) {
+  if (!lib[this.action]) { throw new Error('no action: ' + this.action + ' defined in libary.js'); }
+
   var result = lib[this.action](this.ivr.model, input);
   this.ivr.current_node = this.ivr.getNode(this.redirect);
   return result;

@@ -5,11 +5,6 @@
 var twilio = require('twilio');
 var bars   = require('handlebars');
 var Q      = require('q');
-var split  = require('./split');
-var gather = require('./gather');
-var say    = require('./say');
-var action = require('./action');
-var hangup = require('./hangup');
 
 // creates a new node object based on a json spec and returns it
 var createNode = function(ivr, spec) {
@@ -19,34 +14,47 @@ var createNode = function(ivr, spec) {
   var node = JSON.parse(JSON.stringify(spec));
   node.ivr = ivr;
 
-  if (node.method === 'gather') {
-    node.run = gather.run;
-    node.gather = gather.gather;
-  } else if (node.method === 'split') {
-    node.run = split.run;
-    node.split = split.split; 
-  } 
-  else if (node.method === 'say')    { node.run = say.run;    }  
-  else if (node.method === 'action') { node.run = action.run; } 
-  else if (node.method === 'hangup') { node.run = hangup.run; } 
-  else { throw new Error('unknown node method'); }
+  var module = require('./' + node.method);
+  node.run = module.run;
+  
+  if (module.resume) {
+    node.resume = function(input) {
+      var result = module.resume(input);
 
+      // resume must always return a promise, so if it doesn't, then construct one
+      if (Q.isPromise(result)) {
+	return result;
+      }
+      return Q.fcall(function() { return result; });
+    };
+  }
+  
   return node;
 };
 
 // ivr.run()
+// runs any preprocess (split, gather, etc.)
 // runs the current node
-var run = function() {
+// takes an optional input argument if ivr is pending input
+// returns a promise resloving with twiml response string
+var run = function(input) {
   var self = this;
   var handleErr = function(err) {
     console.error(err);
     self.model.error = err;
     self.current_node = self.getNode(self.current_node.error_redirect || self.default_error_redirect);
-    return self.current_node.run(); 
+    return self.current_node.run();
   };
   
   try {
-    var result = this.current_node.run();
+    var result;
+    if (this.input_pending) {
+      this.input_pending = false;
+      if (!this.current_node.resume) { throw new Error('ivr is pending input but ' + this.current_node.id + ' has no resume method'); }
+      result = this.current_node.resume(input).then(function() { return this.current_node.run(); });
+    } else {
+      result = this.current_node.run();
+    }
     
     if (Q.isPromise(result)) {
       return result.catch(handleErr);
@@ -93,6 +101,7 @@ module.exports.create = function(spec) {
     var json = spec;
     json.current_node_id = this.current_node.id;
     json.model = this.model;
+    json.input_pending = this.input_pending;
     return JSON.stringify(json);
   };
 

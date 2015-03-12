@@ -1,3 +1,4 @@
+var Q    = require('q');
 var lib  = require('./library');
 
 module.exports.run = function() {
@@ -8,10 +9,10 @@ module.exports.run = function() {
 
   var self = this;
   this.ivr.twiml.gather({
-    action      : '/gather',
+    action      : '/',
     timeout     : this.timeout || this.ivr.default_timeout,
     numDigits   : this.numDigits,
-    finsihOnKey : this.finishOnKey
+    finishOnKey : this.finishOnKey
   }, function() {
     this.say({
       voice    : self.voice    || self.ivr.default_voice,
@@ -19,13 +20,17 @@ module.exports.run = function() {
     }, self.prompt);
   });
 
+  this.ivr.input_pending = true;
+
   return this.ivr.twiml.toString();
 };
 
-module.exports.gather = function(input) {
+module.exports.resume = function(input) {
   if (!lib[this.action]) { throw new Error('no action: ' + this.action + ' defined in libary.js'); }
 
   var result = lib[this.action](this.ivr.model, input);
+
   this.ivr.current_node = this.ivr.getNode(this.redirect);
+  
   return result;
 };

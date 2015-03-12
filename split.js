@@ -21,11 +21,13 @@ module.exports.run = function() {
       language : self.language || self.ivr.default_language
     }, prompt);
   });
+
+  this.ivr.input_pending = true;
   
   return this.ivr.twiml.toString();
 };
 
-module.exports.split = function(input) {
+module.exports.resume = function(input) {
   var result = this.paths.filter(function(elt) {
     return elt.key === input;
   })[0];

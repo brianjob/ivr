@@ -17,6 +17,8 @@ module.exports.run = function() {
       return this.ivr.current_node.run();
     });
   }
+
   this.ivr.current_node = this.ivr.getNode(this.redirect);
+
   return this.ivr.current_node.run();
 };

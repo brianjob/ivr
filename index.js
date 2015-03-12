@@ -36,10 +36,3 @@ app.post('/', function(req, res) {
   res.send(ivr_session.resumeSession(req)).then(function(result) { res.send(result); });
 });
 
-app.post('/gather', function(req, res) {
-  ivr_session.gather(req).then(function(result) { res.send(result); });
-});
-
-app.post('/split', function(req, res) {
-  ivr_session.split(req).then(function(result) { res.send(result); });
-});

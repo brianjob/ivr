@@ -18,8 +18,9 @@ var createNode = function(ivr, spec) {
   node.run = module.run;
   
   if (module.resume) {
+    node.resume_func = module.resume; // makes 'this' inside module.resume point to node
     node.resume = function(input) {
-      var result = module.resume(input);
+      var result = node.resume_func(input);
 
       // resume must always return a promise, so if it doesn't, then construct one
       if (Q.isPromise(result)) {

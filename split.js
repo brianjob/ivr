@@ -1,7 +1,7 @@
 module.exports.run = function() {
-  if (!this.invalid_input_redirect) { throw new Error('split node must define invalid_input_redirect'); }
+  if (!this.invalid_input_redirect) { throw new Error('split node ' + this.id + ' must define invalid_input_redirect'); }
   if (! (this.paths && this.paths.length > 0) ) { 
-    throw new Error('split node must have at least one path'); 
+    throw new Error('split node ' + this.id + '  must have at least one path'); 
   }
   
   var prompt = this.paths.map(function(elt) {
@@ -12,7 +12,7 @@ module.exports.run = function() {
 
   var self = this;
   this.ivr.twiml.gather({
-    action    : '/split',
+    action    : '/',
     timeout   : this.timeout || this.ivr.default_timout,
     numDigits : 1
   }, function() {

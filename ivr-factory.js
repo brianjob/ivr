@@ -47,6 +47,7 @@ var run = function(input) {
     console.error(err);
     self.model.error = err;
     self.current_node = self.getNode(self.current_node.error_redirect || self.default_error_redirect);
+    console.log('redirecting to ' + self.current_node.id);
     return self.current_node.run();
   };
 
@@ -59,15 +60,12 @@ var run = function(input) {
 	return self.current_node.run(); 
       });
     } else {
-      console.log('CURRENT_NODE.RUN()');
       result = this.current_node.run();
     }
     
     if (Q.isPromise(result)) {
-      console.log('RETURN CATCH HANDLE ERROR');
       return result.catch(handleErr);
     }
-
     return Q.fcall(function() { return result; });
 
   } catch (err) { return handleErr(err); }

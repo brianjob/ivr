@@ -9,7 +9,8 @@ module.exports.run = function() {
     finishOnKey : this.finishOnKey,
     maxLength   : this.maxLength,
     playBeep    : this.playBeep,
-    trim        : 'trim-silence'
+    trim        : 'trim-silence',
+    transcribeCallback : '/transcribe'
   });
 
   this.ivr.input_pending = true;

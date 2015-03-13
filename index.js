@@ -36,3 +36,7 @@ app.post('/', function(req, res) {
   ivr_session.resumeSession(req).then(function(result) { res.send(result); });
 });
 
+app.post('/transcribe', function(req, res) {
+  console.dir(req.body);
+  res.send('good');
+});

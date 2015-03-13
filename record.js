@@ -10,7 +10,7 @@ module.exports.run = function() {
     trim        : 'trim-silence'
   });
 
-  return this.twiml.toString();
+  return this.ivr.twiml.toString();
 };
 
 module.exports.resume = function(input) {

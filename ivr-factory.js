@@ -41,6 +41,7 @@ var createNode = function(ivr, spec) {
 var run = function(input) {
   var self = this;
   var handleErr = function(err) {
+    console.log('HANDLE ERROR');
     console.error(err);
     self.model.error = err;
     self.current_node = self.getNode(self.current_node.error_redirect || self.default_error_redirect);
@@ -57,7 +58,7 @@ var run = function(input) {
       if (!this.current_node.resume) { throw new Error('ivr is pending input but ' + this.current_node.id + ' has no resume method'); }
       result = this.current_node.resume(input).then(function() {
 	console.log('RESUME');
-	console.dir(this.current_node);
+	console.dir(this);
 	return this.current_node.run(); 
       });
     } else {

@@ -1,4 +1,5 @@
 var lib = require('./library');
+var sapp = require('./sapp');
 
 module.exports.run = function() {
   if (!this.redirect) { throw new Error('record node: ' + this.id + ' must have redirect'); }
@@ -10,7 +11,7 @@ module.exports.run = function() {
     maxLength   : this.maxLength,
     playBeep    : this.playBeep,
     trim        : 'trim-silence',
-    transcribeCallback : '/transcribe'
+    transcribe  : this.transcribe
   });
 
   this.ivr.input_pending = true;
@@ -21,8 +22,8 @@ module.exports.run = function() {
 module.exports.resume = function(input) {
   if (!lib[this.action]) { throw new Error('no action: ' + this.action + ' defined in library.js'); }
 
-  var recording = input.RecordingUrl;
+  sapp.transcriptionText(input.RecordingUrl).then(function(text) { console.log(text); });
 
-  console.log('Recording URL: ' + recording);
+
   this.ivr.current_node = this.ivr.getNode(this.redirect);
 };

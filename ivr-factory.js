@@ -6,6 +6,15 @@ var twilio = require('twilio');
 var bars   = require('handlebars');
 var Q      = require('q');
 
+// takes a thing as input. if that thing is a promise it returns it, 
+// otherwise it creates a promise resolving to thing and returns it
+var promisefy = function(thing) {
+  if (Q.isPromise(thing)) {
+    return thing;
+  }
+  return Q.fcall(function() { return thing; });
+};
+
 // creates a new node object based on a json spec and returns it
 var createNode = function(ivr, spec) {
   if (!spec.id) { throw new Error('node must have id'); }
@@ -15,19 +24,12 @@ var createNode = function(ivr, spec) {
   node.ivr = ivr;
 
   var module = require('./' + node.method);
-  node.run = module.run;
+  node.run_func = module.run;
+  node.run = function() { return promisefy(node.run_func()); };
   
   if (module.resume) {
     node.resume_func = module.resume; // makes 'this' inside module.resume point to node
-    node.resume = function(input) {
-      var result = node.resume_func(input);
-
-      // resume must always return a promise, so if it doesn't, then construct one
-      if (Q.isPromise(result)) {
-	return result;
-      }
-      return Q.fcall(function() { return result; });
-    };
+    node.resume = function(input) { return promisefy(node.resume_func(input)); };
   }
   
   return node;

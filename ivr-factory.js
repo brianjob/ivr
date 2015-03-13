@@ -57,10 +57,12 @@ var run = function(input) {
 	return self.current_node.run(); 
       });
     } else {
+      console.log('CURRENT_NODE.RUN()');
       result = this.current_node.run();
     }
     
     if (Q.isPromise(result)) {
+      console.log('RETURN CATCH HANDLE ERROR');
       return result.catch(handleErr);
     }
 

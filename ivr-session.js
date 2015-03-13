@@ -26,9 +26,10 @@ module.exports.newSession = function(req) {
 module.exports.resumeSession = function(req) {
   var ivr = ivr_factory.create(JSON.parse(req.session.ivr));
   
-  return ivr.run(req.body.Digits).then(function() {
+  return ivr.run(req.body.Digits).then(function(result) {
     req.session.ivr = ivr.toJSON();
-    return;
+    console.log('RESUME SESSION RETURN');
+    return result;
   });
 };
 

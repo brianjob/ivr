@@ -48,9 +48,6 @@ var run = function(input) {
     return self.current_node.run();
   };
 
-  console.log('IVR.RUN()');
-  console.dir(this);
-  
   try {
     var result;
     if (this.input_pending) {

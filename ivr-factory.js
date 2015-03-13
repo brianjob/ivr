@@ -2,9 +2,7 @@
 // Author:      Brian Barton
 // Description: Factory that takes a JSON specification and returns an IVR object
 
-var twilio = require('twilio');
-var bars   = require('handlebars');
-var Q      = require('q');
+var Q = require('q');
 
 // takes a thing as input. if that thing is a promise it returns it, 
 // otherwise it creates a promise resolving to thing and returns it
@@ -24,70 +22,19 @@ var createNode = function(ivr, spec) {
   node.ivr = ivr;
 
   var module = require('./' + node.method);
-  node.run_func = module.run;
-  node.run = function() { return promisefy(node.run_func()); };
+  node.runFunc = module.run;
+  node.run = function() { return promisefy(node.runFunc()); };
   
   if (module.resume) {
-    node.resume_func = module.resume; // makes 'this' inside module.resume point to node
-    node.resume = function(input) { return promisefy(node.resume_func(input)); };
+    node.resumeFunc = module.resume; // makes 'this' inside module.resume point to node
+    node.resume = function(input) { return promisefy(node.resumeFunc(input)); };
   }
   
   return node;
 };
 
-// ivr.run()
-// runs any preprocess (split, gather, etc.)
-// runs the current node
-// takes an optional input argument if ivr is pending input
-// returns a promise resloving with twiml response string
-var run = function(input) {
-  var self = this;
-  var handleErr = function(err) {
-    console.log('HANDLE ERROR');
-    console.error(err);
-    self.model.error = err;
-    self.current_node = self.getNode(self.current_node.error_redirect || self.default_error_redirect);
-    console.log('redirecting to ' + self.current_node.id);
-    return self.current_node.run();
-  };
-
-  try {
-    var result;
-    if (this.input_pending) {
-      this.input_pending = false;
-      if (!this.current_node.resume) { throw new Error('ivr is pending input but ' + this.current_node.id + ' has no resume method'); }
-      result = this.current_node.resume(input).then(function() {
-	return self.current_node.run(); 
-      });
-    } else {
-      result = this.current_node.run();
-    }
-    
-    if (Q.isPromise(result)) {
-      return result.catch(handleErr);
-    }
-    return Q.fcall(function() { return result; });
-
-  } catch (err) { return handleErr(err); }
-};
-
-// ivr.getNode()
-// looks up a node by id
-var getNode = function(id) {
-  var result = this.nodes.filter(function(elt) {
-    return elt.id === id;
-  });
-  
-  if (result.length > 1) { throw new Error('multiple nodes with that id' + id + ' exist'); }
-
-  if (result < 1) { throw new Error('no node with id: ' + id + ' exists'); }
-
-  return result[0];
-};
-
 // creates a new ivr object based on a json spec and returns it
 module.exports.create = function(spec) {
-  if (!spec.domain) { throw new Error('IVR must have domain'); }
   if (!spec.access_number) { throw new Error('IVR must have access_number'); }
   if (! (spec.nodes && spec.nodes.length > 0) ) { 
     throw new Error('IVR must have at least 1 node defined'); 
@@ -96,20 +43,10 @@ module.exports.create = function(spec) {
 
   var ivr = JSON.parse(JSON.stringify(spec));
   
+  // construct the model here if it wasn't provided in the spec
   if (!ivr.model) { ivr.model = {}; }
 
-  ivr.model.domain = spec.domain; // if a model is provided and contains a domain, it will be overwritten here
-  ivr.twiml        = new twilio.TwimlResponse();
-  ivr.run          = run;
-  ivr.getNode      = getNode;
-
-  ivr.toJSON = function() {
-    var json = spec;
-    json.current_node_id = this.current_node.id;
-    json.model = this.model;
-    json.input_pending = this.input_pending;
-    return JSON.stringify(json);
-  };
+  ivr.twiml = new require('twilio').TwimlResponse();
 
   // construct each node
   ivr.nodes = spec.nodes.map(function(elt) { return createNode(ivr, elt); });
@@ -120,6 +57,59 @@ module.exports.create = function(spec) {
   } else {
     ivr.current_node = ivr.nodes[0];
   }
+
+  // runs any remaining  (split, gather, etc.)
+  // runs the current node
+  // takes an optional input argument if ivr is pending input
+  // returns a promise resloving with twiml response string
+  ivr.run = function(input) {
+    var self = this;
+    var handleErr = function(err) {
+      console.error(err);
+      self.model.error = err;
+      self.current_node = self.getNode(self.current_node.error_redirect || self.default_error_redirect);
+      return self.current_node.run();
+    };
+    
+    try {
+      var result;
+      if (this.input_pending) {
+	this.input_pending = false;
+	if (!this.current_node.resume) { throw new Error('ivr is pending input but ' + this.current_node.id + ' has no resume method'); }
+	result = this.current_node.resume(input).then(function() { return self.current_node.run(); });
+      } else {
+	result = this.current_node.run();
+      }
+      
+      if (Q.isPromise(result)) {
+	return result.catch(handleErr);
+      }
+      return Q.fcall(function() { return result; });
+      
+    } catch (err) { return handleErr(err); }
+  };
+  
+  // looks up a node by id and returns it.
+  // throws an error if no such node exists
+  ivr.getNode = function(id) {
+    var result = this.nodes.filter(function(elt) {
+      return elt.id === id;
+    });
+    
+    if (result.length > 1) { throw new Error('multiple nodes with that id' + id + ' exist'); }
+    if (result < 1) { throw new Error('no node with id: ' + id + ' exists'); }
+    
+    return result[0];
+  };
+
+  // serializes the ivr object
+  ivr.toJSON = function() {
+    var json = spec;
+    json.current_node_id = this.current_node.id;
+    json.model = this.model;
+    json.input_pending = this.input_pending;
+    return JSON.stringify(json);
+  };
 
   return ivr;
 };  

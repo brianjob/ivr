@@ -22,7 +22,9 @@ module.exports.run = function() {
 module.exports.resume = function(input) {
   console.log('RECORD RESUME');
 
-  sapp.transcriptionText(input.RecordingUrl).then(function(text) { console.log(text); });
-
-  this.ivr.current_node = this.ivr.getNode(this.redirect);
+  return sapp.transcriptionText(input.RecordingUrl).then(function(text) { 
+    console.log(text);   
+    this.ivr.current_node = this.ivr.getNode(this.redirect); 
+    return text;
+  });
 };

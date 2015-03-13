@@ -12,6 +12,8 @@ module.exports.run = function() {
     trim        : 'trim-silence'
   });
 
+  this.input_pending = true;
+
   return this.ivr.twiml.toString();
 };
 

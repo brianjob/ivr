@@ -31,8 +31,9 @@ module.exports.resume = function(input) {
   var result = lib[this.action](this.ivr.model, input);
 
   if (Q.isPromise(result)) { // if async we need to wait until finished to update current node
+    var self = this;
     return result.then(function() {
-      this.ivr.current_node = this.ivr.getNode(this.redirect);
+      self.ivr.current_node = self.ivr.getNode(self.redirect);
     });
   }
   this.ivr.current_node = this.ivr.getNode(this.redirect);

@@ -29,7 +29,7 @@ module.exports.run = function() {
 
 module.exports.resume = function(input) {
   var result = this.paths.filter(function(elt) {
-    return elt.key === input;
+    return elt.key === input.Digits;
   })[0];
 
   if (result) {

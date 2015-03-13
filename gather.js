@@ -28,7 +28,7 @@ module.exports.run = function() {
 module.exports.resume = function(input) {
   if (!lib[this.action]) { throw new Error('no action: ' + this.action + ' defined in libary.js'); }
 
-  var result = lib[this.action](this.ivr.model, input);
+  var result = lib[this.action](this.ivr.model, input.Digits);
 
   if (Q.isPromise(result)) { // if async we need to wait until finished to update current node
     var self = this;

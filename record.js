@@ -12,7 +12,7 @@ module.exports.run = function() {
     trim        : 'trim-silence'
   });
 
-  this.input_pending = true;
+  this.ivr.input_pending = true;
 
   return this.ivr.twiml.toString();
 };
@@ -23,4 +23,5 @@ module.exports.resume = function(input) {
   var recording = input.RecordingUrl;
 
   console.log('Recording URL: ' + recording);
+  this.ivr.current_node = this.ivr.getNode(this.redirect);
 };

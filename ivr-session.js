@@ -27,9 +27,14 @@ module.exports.resumeSession = function(req) {
   var ivr = ivr_factory.create(JSON.parse(req.session.ivr));
   
   console.log('RESUME SESSION PRE');
-  console.dir(ivr);
+  console.dir(ivr.run);
 
-  return ivr.run(req.body.Digits).then(function(result) {
+  var promise = ivr.run(req.body.Digits);
+  console.log('PROMISE');
+  console.dir(promise);
+
+//  return ivr.run(req.body.Digits).
+  return promise.then(function(result) {
     req.session.ivr = ivr.toJSON();
     console.log('RESUME SESSION RETURN');
     return result;

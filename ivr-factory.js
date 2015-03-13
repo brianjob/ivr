@@ -51,13 +51,6 @@ module.exports.create = function(spec) {
   // construct each node
   ivr.nodes = spec.nodes.map(function(elt) { return createNode(ivr, elt); });
 
-  // if a current node exists, set it, otherwise it should be the first node
-  if (spec.current_node_id) {
-    ivr.current_node = ivr.getNode(spec.current_node_id);
-  } else {
-    ivr.current_node = ivr.nodes[0];
-  }
-
   // runs any remaining  (split, gather, etc.)
   // runs the current node
   // takes an optional input argument if ivr is pending input
@@ -110,6 +103,9 @@ module.exports.create = function(spec) {
     json.input_pending = this.input_pending;
     return JSON.stringify(json);
   };
+  
+  // if a current node exists, set it, otherwise it should be the first node
+  ivr.current_node = spec.current_node_id ? ivr.getNode(spec.current_node_id) : ivr.nodes[0];
 
   return ivr;
 };  

@@ -55,7 +55,7 @@ var run = function(input) {
       if (!this.current_node.resume) { throw new Error('ivr is pending input but ' + this.current_node.id + ' has no resume method'); }
       result = this.current_node.resume(input).then(function() {
 	console.log('RESUME');
-	console.dir(this);
+	console.dir(self);
 	return this.current_node.run(); 
       });
     } else {

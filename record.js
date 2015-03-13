@@ -1,6 +1,8 @@
 var lib = require('./library');
 
 module.exports.run = function() {
+  if (!this.redirect) { throw new Error('record node: ' + this.id + ' must have redirect'); }
+
   this.ivr.twiml.record({
     action      : '/',
     timeout     : this.timeout || this.ivr.default_timeout,

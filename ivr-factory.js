@@ -60,7 +60,7 @@ module.exports.create = function(spec) {
     var handleErr = function(err) {
       console.error(err);
       self.model.error = err;
-      console.log('CURRENT NODE [' + self.id + '] ERROR REDIRECT: ' + self.current_node.error_redirect);
+      console.log('CURRENT NODE [' + self.current_node.id + '] ERROR REDIRECT: ' + self.current_node.error_redirect);
       self.current_node = self.getNode(self.current_node.error_redirect || self.default_error_redirect);
       
       return self.current_node.run();

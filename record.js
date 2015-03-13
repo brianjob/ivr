@@ -20,10 +20,9 @@ module.exports.run = function() {
 };
 
 module.exports.resume = function(input) {
-  if (!lib[this.action]) { throw new Error('no action: ' + this.action + ' defined in library.js'); }
+  console.log('RECORD RESUME');
 
   sapp.transcriptionText(input.RecordingUrl).then(function(text) { console.log(text); });
-
 
   this.ivr.current_node = this.ivr.getNode(this.redirect);
 };

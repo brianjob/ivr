@@ -17,12 +17,6 @@ module.exports.run = function() {
   return this.ivr.twiml.toString();
 };
 
-module.exports.resume = function(input) {
-  console.log('RECORD RESUME');
-
-  return sapp.transcriptionText(input.RecordingUrl).then(function(text) { 
-    console.log(text);   
-    this.ivr.current_node = this.ivr.getNode(this.redirect); 
-    return text;
-  });
+module.exports.resume = function() {
+  throw new Error('NOT IMPLEMENTED');
 };

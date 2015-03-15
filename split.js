@@ -5,7 +5,7 @@ module.exports.run = function() {
   }
   
   var prompt = this.paths.map(function(elt) {
-    return 'Press ' + elt.key + ' to ' + elt.prompt + '.';
+    return elt.prompt + '.';
   }).reduce(function(a, b) {
     return a + ' ' + b;
   });

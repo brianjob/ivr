@@ -9,9 +9,7 @@ module.exports.run = function() {
     timeout     : this.timeout || this.ivr.default_timeout,
     finishOnKey : this.finishOnKey,
     maxLength   : this.maxLength,
-    playBeep    : this.playBeep,
-    trim        : 'trim-silence',
-    transcribe  : this.transcribe
+    playBeep    : this.playBeep
   });
 
   this.ivr.input_pending = true;

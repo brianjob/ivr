@@ -9,7 +9,7 @@ module.exports.run = function() {
     throw new Error(this.action + '() is not defined in library.js');
   }
 
-  var result = lib[this.action](this.ivr.model);
+  var result = lib[this.action](this.ivr.model, this.action_arg);
 
   if (Q.isPromise(result)) {
     return result.then(function() {

@@ -12,13 +12,13 @@ module.exports.run = function() {
   var result = lib[this.action](this.ivr.model, this.action_arg);
 
   if (Q.isPromise(result)) {
+    var self = this;
     return result.then(function() {
-      this.ivr.current_node = this.ivr.getNode(this.redirect);
-      return this.ivr.current_node.run();
+      self.ivr.current_node = self.ivr.getNode(self.redirect);
+      return self.ivr.current_node.run();
     });
   }
 
   this.ivr.current_node = this.ivr.getNode(this.redirect);
-
   return this.ivr.current_node.run();
 };

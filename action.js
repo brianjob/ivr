@@ -12,6 +12,7 @@ module.exports.run = function() {
   var result = lib[this.action](this.ivr.model, this.action_arg);
 
   if (Q.isPromise(result)) {
+    console.log('RESULT of ' + this.action + ' is a PROMISE');
     var self = this;
     return result.then(function() {
       self.ivr.current_node = self.ivr.getNode(self.redirect);
@@ -19,6 +20,7 @@ module.exports.run = function() {
     });
   }
 
+  console.log('RESULT of ' + this.action + ' is NOT a promise');
   this.ivr.current_node = this.ivr.getNode(this.redirect);
   return this.ivr.current_node.run();
 };

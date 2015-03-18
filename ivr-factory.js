@@ -43,12 +43,8 @@ module.exports.create = function(spec) {
 
   var ivr = JSON.parse(JSON.stringify(spec));
   
-  // construct the model here if it wasn't provided in the spec
   if (!ivr.model) { ivr.model = {}; }
-
   ivr.twiml = new require('twilio').TwimlResponse();
-
-  // construct each node
   ivr.nodes = spec.nodes.map(function(elt) { return createNode(ivr, elt); });
 
   // runs any remaining  (split, gather, etc.)
@@ -60,7 +56,6 @@ module.exports.create = function(spec) {
     var handleErr = function(err) {
       console.error(err);
       self.model.error = err;
-      console.log('CURRENT NODE [' + self.current_node.id + '] ERROR REDIRECT: ' + self.current_node.error_redirect);
       self.current_node = self.getNode(self.current_node.error_redirect || self.default_error_redirect);
       
       return self.current_node.run();
@@ -87,9 +82,7 @@ module.exports.create = function(spec) {
   // looks up a node by id and returns it.
   // throws an error if no such node exists
   ivr.getNode = function(id) {
-    var result = this.nodes.filter(function(elt) {
-      return elt.id === id;
-    });
+    var result = this.nodes.filter(function(elt) { return elt.id === id; });
     
     if (result.length > 1) { throw new Error('multiple nodes with that id' + id + ' exist'); }
     if (result < 1) { throw new Error('no node with id: ' + id + ' exists'); }

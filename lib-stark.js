@@ -1,5 +1,5 @@
 module.exports.setStarkAccountID = function(model, input) {
-  model.account_id = model.account_alpha + input;
+  model.account_id = (model.account_alpha || '') + input;
 };
 
 // set the source key based on trust account

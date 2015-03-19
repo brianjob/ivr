@@ -7,14 +7,13 @@ module.exports.run = function() {
   }
   if (!this.default_redirect) { throw new Error('split condition node must define default_redirect'); }
 
+  var self = this;
   var result = this.paths.filter(function(elt) {
     if (!elt.redirect) { throw new Error('path must define redirect'); }
     if (!elt.condition) { throw new Error('path must define condition'); }
     if (!lib[elt.condition]) { throw new Error('library contains no function: ' + elt.condition); }
 
-    console.dir(this.ivr);
-
-    var satisfies_condition = lib[elt.condition](this.ivr.model);
+    var satisfies_condition = lib[elt.condition](self.ivr.model);
     if (Q.isPromise(satisfies_condition)) {
       throw new Error('condition functions can not return promises');
     }

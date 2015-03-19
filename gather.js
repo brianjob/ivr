@@ -12,7 +12,7 @@ module.exports.run = function() {
     action      : '/',
     timeout     : this.timeout || this.ivr.default_timeout,
     numDigits   : this.numDigits,
-    finishOnKey : this.finishOnKey
+    finishOnKey : this.finishOnKey || ''
   }, function() {
     this.say({
       voice    : self.voice    || self.ivr.default_voice,

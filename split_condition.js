@@ -8,7 +8,10 @@ module.exports.run = function() {
   if (!this.default_redirect) { throw new Error('split condition node must define default_redirect'); }
 
   var result = this.paths.filter(function(elt) {
+    if (!elt.redirect) { throw new Error('path must define redirect'); }
+    if (!elt.condition) { throw new Error('path must define condition'); }
     if (!lib[elt.condition]) { throw new Error('library contains no function: ' + elt.condition); }
+
     var satisfies_condition = lib[elt.condition](this.ivr.model);
     if (Q.isPromise(satisfies_condition)) {
       throw new Error('condition functions can not return promises');
@@ -16,5 +19,5 @@ module.exports.run = function() {
     return satisfies_condition;
   })[0];
 
-  this.ivr.current_node = this.ivr.getNode(result || this.default_redirect);
+  this.ivr.current_node = this.ivr.getNode(result.redirect || this.default_redirect);
 };

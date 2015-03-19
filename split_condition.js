@@ -12,6 +12,8 @@ module.exports.run = function() {
     if (!elt.condition) { throw new Error('path must define condition'); }
     if (!lib[elt.condition]) { throw new Error('library contains no function: ' + elt.condition); }
 
+    console.dir(this.ivr);
+
     var satisfies_condition = lib[elt.condition](this.ivr.model);
     if (Q.isPromise(satisfies_condition)) {
       throw new Error('condition functions can not return promises');

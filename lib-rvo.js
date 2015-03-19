@@ -4,7 +4,7 @@ var ach = function(model) {
 
 
 var cc = function(model) {
-  var allowed_creditor_ids = [
+  var blacklist_creditor_ids = [
     '328',
     '454',
     '2096',
@@ -23,7 +23,7 @@ var cc = function(model) {
     '2526',
     '2562'
   ];
-    return allowed_creditor_ids.indexOf(model.auth.account.creditor_id) > -1;
+    return blacklist_creditor_ids.indexOf(model.auth.account.creditor_id) === -1;
 };
 
 module.exports.rvoAllowedACHandCC = function(model) {

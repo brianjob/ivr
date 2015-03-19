@@ -20,5 +20,7 @@ module.exports.run = function() {
     return satisfies_condition;
   })[0];
 
-  this.ivr.current_node = this.ivr.getNode(result.redirect || this.default_redirect);
+  this.ivr.current_node = this.ivr.getNode((result && result.redirect) || this.default_redirect);
+
+  return this.ivr.current_node.run();
 };

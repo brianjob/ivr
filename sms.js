@@ -8,9 +8,8 @@ module.exports.run = function() {
   var template = bars.compile(this.template);
 
   this.ivr.twiml.sms({
-    action         : '/',
-    method         : 'POST',
-    statusCallback : '/sms'
+//    action         : '/',
+//    method         : 'POST',
   }, template(this.ivr.model));
 
   this.ivr.current_node = this.ivr.getNode(this.redirect);

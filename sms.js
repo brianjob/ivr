@@ -15,4 +15,6 @@ module.exports.run = function() {
   }, template(this.ivr.model));
 
   this.ivr.current_node = this.ivr.getNode(this.redirect);
+
+  return this.ivr.twiml.toString();
 };

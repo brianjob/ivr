@@ -17,5 +17,7 @@ module.exports.run = function() {
 
   this.ivr.current_node = this.ivr.getNode(this.redirect);
 
+  console.log(this.ivr.twiml.toString());
+
   return this.ivr.twiml.toString();
 };

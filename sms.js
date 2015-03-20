@@ -1,6 +1,7 @@
 var bars = require('handlebars');
 
 module.exports.run = function() {
+  console.log('SMS.RUN(): ' + this.id);
   if (!this.template) { throw new Error('sms node: ' + this.id + ' must have template'); }
   if (!this.redirect) { throw new Error('sms node: ' + this.id + ' must have redirect'); }
 

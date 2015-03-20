@@ -4,7 +4,6 @@ var express = require('express'),
      assert = require('assert'),
 ivr_session = require('./ivr-session');
 
-assert(process.env.ACCOUNTS_HOST, 'ACCOUNTS_HOST must be set');
 assert(process.env.SESSION_SECRET, 'SESSION_SECRET must be set');
 
 var app = express();

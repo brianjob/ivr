@@ -4,9 +4,9 @@ module.exports.run = function() {
     action       : '/',
     method       : 'POST',
     timeout      : this.timeout || this.ivr.default_timeout,
-    record       : this.record,
-    hangupOnStar : this.hangUpOnStar
-  });
+    record       : this.record || 'do-not-record',
+    hangupOnStar : this.hangUpOnStar || false
+  }, this.number );
 
   this.ivr.current_node = this.ivr.getNode(this.redirect);
 

@@ -4,7 +4,7 @@ module.exports.run = function() {
     action       : '/',
     method       : 'POST',
     timeout      : this.timeout || this.ivr.default_timeout,
-    record       : this.record || 'do-not-record',
+    record       : this.record ? 'record-from-answer' : 'do-not-record',
     hangupOnStar : this.hangUpOnStar || false
   }, this.number );
 

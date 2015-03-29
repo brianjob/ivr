@@ -33,10 +33,15 @@ module.exports.newSession = function(req) {
 module.exports.resumeSession = function(req) {
   console.log('@@@ Resume IVR Session @@@');
   var ivr = ivr_factory.create(JSON.parse(req.session.ivr));
+  console.log('@@@ ivr created, run node');
   return ivr.run(req.body).then(function(result) {
-    ivr_tracker.update(ivr);
-    req.session.ivr = ivr.toJSON();
-    return result;
+    console.log('@@@ run node complete, updating tracker');
+    return ivr_tracker.update(ivr).then(function() {
+      console.log('@@@ update tracker complete, storing session');
+      req.session.ivr = ivr.toJSON();
+      console.log('done');
+      return result;
+    });
   });
 };
 

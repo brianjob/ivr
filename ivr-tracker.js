@@ -23,12 +23,12 @@ var getStandardParams = function(query) {
   };
 };
 
-module.exports.create = function(req, ivr) {
-  return sapp.newIVRSession(getStandardParams(req), ivr);
+module.exports.create = function(query, ivr) {
+  return sapp.newIVRSession(getStandardParams(query), ivr);
 };
 
-module.exports.update = function(req, ivr) {
-  return sapp.updateIVRSession(getStandardParams(req), ivr);
+module.exports.update = function(query, ivr) {
+  return sapp.updateIVRSession(getStandardParams(query), ivr);
 };
 
 // called with a request from a call end callback (status callback) request

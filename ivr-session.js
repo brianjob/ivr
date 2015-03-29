@@ -36,7 +36,7 @@ module.exports.resumeSession = function(req) {
   console.log('@@@ ivr created, run node');
   return ivr.run(req.body).then(function(result) {
     console.log('@@@ run node complete, updating tracker');
-    return ivr_tracker.update(req.query, ivr).then(function() {
+    return ivr_tracker.update(req.body, ivr).then(function() {
       console.log('@@@ update tracker complete, storing session');
       req.session.ivr = ivr.toJSON();
       console.log('done');

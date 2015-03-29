@@ -51,6 +51,7 @@ module.exports.create = function(spec) {
   if (!ivr.model) { ivr.model = {}; }
   ivr.twiml = new require('twilio').TwimlResponse();
   ivr.nodes = spec.nodes.map(function(elt) { return createNode(ivr, elt); });
+  ivr.node_path = [];
 
   // runs any remaining  (split, gather, etc.)
   // runs the current node

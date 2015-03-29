@@ -23,13 +23,18 @@ var createNode = function(ivr, spec) {
 
   var module = require('./' + node.method);
   node.runFunc = module.run;
-  node.run = function() { return promisefy(node.runFunc()); };
+  node.run = function() {
+    this.ivr.node_path.push(this);
+    return promisefy(node.runFunc()); };
   
   if (module.resume) {
     node.resumeFunc = module.resume; // makes 'this' inside module.resume point to node
-    node.resume = function(input) { return promisefy(node.resumeFunc(input)); };
+    node.resume = function(input) { 
+      this.input = input;
+      return promisefy(node.resumeFunc(input));
+    };
   }
-  
+
   return node;
 };
 
@@ -96,6 +101,7 @@ module.exports.create = function(spec) {
     json.current_node_id = this.current_node.id;
     json.model = this.model;
     json.input_pending = this.input_pending;
+    json.node_path = this.node_path;
     return JSON.stringify(json);
   };
   

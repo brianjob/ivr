@@ -13,6 +13,7 @@ ivr_factory = require('./ivr-factory');
 // 4. Starts the session
 // RETURNS a promise resolving with the ivr session
 module.exports.newSession = function(req) {
+  console.log('@@@ New IVR Session @@@');
   return sapp.ivr_settings(req.query.To).then(function(settings) {
     var ivr = ivr_factory.create(settings);
     var result = ivr.run();
@@ -30,6 +31,7 @@ module.exports.newSession = function(req) {
 // 4. updates the tracker
 // RETURNS a promise resolving with the twiml
 module.exports.resumeSession = function(req) {
+  console.log('@@@ Resume IVR Session @@@');
   var ivr = ivr_factory.create(JSON.parse(req.session.ivr));
   return ivr.run(req.body).then(function(result) {
     ivr_tracker.update(ivr);

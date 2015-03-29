@@ -27,8 +27,8 @@ module.exports.create = function(req, ivr) {
   return sapp.newIVRSession(getStandardParams(req), ivr);
 };
 
-module.exports.update = function(ivr) {
-  return sapp.updateIVRSession(undefined, ivr);
+module.exports.update = function(req, ivr) {
+  return sapp.updateIVRSession(getStandardParams(req), ivr);
 };
 
 // called with a request from a call end callback (status callback) request

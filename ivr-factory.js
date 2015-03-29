@@ -102,7 +102,7 @@ module.exports.create = function(spec) {
     json.current_node_id = this.current_node.id;
     json.model = this.model;
     json.input_pending = this.input_pending;
-    json.node_path = this.node_path;
+    json.node_path = JSON.stringify(this.node_path);
     return JSON.stringify(json);
   };
   

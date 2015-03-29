@@ -24,7 +24,7 @@ var createNode = function(ivr, spec) {
   var module = require('./' + node.method);
   node.runFunc = module.run;
   node.run = function() {
-    this.ivr.node_path.push(this);
+    this.ivr.node_path.push(JSON.parse(JSON.stringify(this))); // track the visitation of this node by copying it and storing the copy in the node path
     return promisefy(node.runFunc()); };
   
   if (module.resume) {

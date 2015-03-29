@@ -2,7 +2,8 @@
 // Author:      Brian Barton
 // Description: Factory that takes a JSON specification and returns an IVR object
 
-var Q = require('q');
+var Q = require('q'),
+    _ = require('underscore');
 
 // takes a thing as input. if that thing is a promise it returns it, 
 // otherwise it creates a promise resolving to thing and returns it
@@ -24,8 +25,10 @@ var createNode = function(ivr, spec) {
   var module = require('./' + node.method);
   node.runFunc = module.run;
   node.run = function() {
-    this.ivr.node_path.push(JSON.parse(JSON.stringify(this))); // track the visitation of this node by copying it and storing the copy in the node path
-    return promisefy(node.runFunc()); };
+    // track the visitation of this node by copying it and storing the copy in the node path
+    this.ivr.node_path.push(_.omit(this, 'ivr'));
+    return promisefy(node.runFunc()); 
+  };
   
   if (module.resume) {
     node.resumeFunc = module.resume; // makes 'this' inside module.resume point to node

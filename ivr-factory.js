@@ -26,14 +26,18 @@ var createNode = function(ivr, spec) {
   node.runFunc = module.run;
   node.run = function() {
     // track the visitation of this node by copying it and storing the copy in the node path
-    this.ivr.node_path.push(_.omit(this, 'ivr'));
+    var bread_crumb = _.omit(this, 'ivr');
+    bread_crumb.visited = new Date();
+    this.ivr.node_path.push(bread_crumb);
     return promisefy(node.runFunc()); 
   };
   
   if (module.resume) {
     node.resumeFunc = module.resume; // makes 'this' inside module.resume point to node
-    node.resume = function(input) { 
-      this.ivr.node_path[this.ivr.node_path.length - 1].input = input.Digits || '';
+    node.resume = function(input) {
+      var bread_crumb = this.ivr.node_path[this.ivr.node_path.length - 1];
+      bread_crumb.input = input.Digits || '';
+      bread_crumb.input_received = new Date();
 
       if (!input.Digits) { throw new Error('no input received'); }
 

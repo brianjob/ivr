@@ -12,9 +12,10 @@ module.exports.run = function() {
 
   var self = this;
   this.ivr.twiml.gather({
-    action    : '/',
-    timeout   : this.timeout || this.ivr.default_timout,
-    numDigits : 1
+    action      : '/',
+    timeout     : this.timeout || this.ivr.default_timout,
+    numDigits   : 1,
+    finishOnKey : ''
   }, function() {
     this.say({
       voice    : self.voice    || self.ivr.default_voice,

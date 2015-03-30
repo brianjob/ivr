@@ -38,3 +38,11 @@ app.post('/', function(req, res) {
 app.post('/end', function(req, res) {
   ivr_session.endSession(req).then(function(result) { res.send(result); });
 });
+
+app.get('/error', function(req, res) {
+  var twiml = new require('twilio').TwimlResponse();
+  twiml.say({
+    voice : 'alice'
+  }, 'you have encountered an error. goodbye');
+  res.send(twiml.toString());
+});

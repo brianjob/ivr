@@ -35,8 +35,6 @@ app.post('/', function(req, res) {
   ivr_session.resumeSession(req).then(function(result) { res.send(result); });
 });
 
-app.post('/sms', function(req, res) {
-  console.log(req.body.SmsSid);
-  console.log(req.body.SmsStatus);
-  res.send('okay');
+app.post('/end', function(req, res) {
+  ivr_session.endSession(req).then(function(result) { res.send(result); });
 });

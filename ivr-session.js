@@ -45,3 +45,7 @@ module.exports.resumeSession = function(req) {
   });
 };
 
+// Sets the call duration and any recording related properties
+module.exports.endSession = function(req) {
+  return ivr_tracker.end(req.body);
+};

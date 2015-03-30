@@ -32,11 +32,11 @@ module.exports.update = function(query, ivr) {
 };
 
 // called with a request from a call end callback (status callback) request
-module.exports.end = function(query, ivr) {
-  sapp.updateIVRSession(extend(getStandardParams(query), {
+module.exports.end = function(query) {
+  return sapp.updateIVRSession(extend(getStandardParams(query), {
     call_duration      : query.CallDuration,
     recording_url      : query.RecordingUrl,
     recording_sid      : query.RecordingSid,
     recording_duration : query.RecordingDuration
-  }), ivr);
+  }));
 };

@@ -33,7 +33,10 @@ var createNode = function(ivr, spec) {
   if (module.resume) {
     node.resumeFunc = module.resume; // makes 'this' inside module.resume point to node
     node.resume = function(input) { 
-      this.ivr.node_path[this.ivr.node_path.length - 1].input = input.Digits;
+      this.ivr.node_path[this.ivr.node_path.length - 1].input = input.Digits || '';
+
+      if (!input.Digits) { throw new Error('no input received'); }
+
       return promisefy(node.resumeFunc(input));
     };
   }

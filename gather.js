@@ -20,6 +20,10 @@ module.exports.run = function() {
     }, self.prompt);
   });
 
+  this.ivr.twiml.redirect({
+    method : 'POST'
+  }, '/');
+
   this.ivr.input_pending = true;
 
   return this.ivr.twiml.toString();

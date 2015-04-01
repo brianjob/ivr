@@ -1,5 +1,5 @@
 var Q   = require('q');
-var lib = require('./library');
+var lib = require('../library');
 
 module.exports.run = function() {
   if (! (this.paths && this.paths.length > 0) ) {

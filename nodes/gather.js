@@ -1,5 +1,5 @@
 var Q    = require('q');
-var lib  = require('./library');
+var lib  = require('../library');
 
 module.exports.run = function() {
   console.log('GATHER.RUN(): ' + this.id);

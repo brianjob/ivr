@@ -1,4 +1,3 @@
-var lib = require('./library');
 var sapp = require('./sapp');
 
 module.exports.run = function() {

@@ -7,10 +7,11 @@ module.exports.run = function() {
 
   var template = bars.compile(this.template);
 
-  this.ivr.twiml.say({
-    voice    : this.voice    || this.ivr.default_voice,
-    language : this.language || this.ivr.default_language,
-  }, template(this.ivr.model));
+  var opts = {};
+  if (this.voice || this.ivr.default_voice) { opts.voice = this.voice || this.ivr.default_voice; }
+  if (this.language || this.ivr.default_langague) { opts.language = this.language || this.ivr.default_langague; }
+
+  this.ivr.twiml.say(opts, template(this.ivr.model));
   
   this.ivr.current_node = this.ivr.getNode(this.redirect);
   

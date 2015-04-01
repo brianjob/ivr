@@ -1,7 +1,6 @@
 // ivr-session.js
 // Author:      Brian Barton
 // Description: This module binds ivr objects to session objects
-var Q       = require('q');
 var sapp    = require('./sapp'),
 ivr_tracker = require('./ivr-tracker'),
 ivr_factory = require('./ivr-factory');

@@ -22,7 +22,7 @@ var createNode = function(ivr, spec) {
   var node = JSON.parse(JSON.stringify(spec));
   node.ivr = ivr;
 
-  var module = require('./' + node.method);
+  var module = require('./nodes/' + node.method);
   node.runFunc = module.run;
   node.run = function() {
     // track the visitation of this node by copying it and storing the copy in the node path

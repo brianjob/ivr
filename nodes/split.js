@@ -10,17 +10,20 @@ module.exports.run = function() {
     return a + ' ' + b;
   });
 
-  var self = this;
-  this.ivr.twiml.gather({
+  var gather_opts = {
     action      : '/',
-    timeout     : this.timeout || this.ivr.default_timout,
     numDigits   : 1,
     finishOnKey : ''
-  }, function() {
-    this.say({
-      voice    : self.voice    || self.ivr.default_voice,
-      language : self.language || self.ivr.default_language
-    }, prompt);
+  };
+
+  var self = this;
+  var say_opts = {};
+  if (self.voice || self.ivr.default_voice) { say_opts.voice = self.voice || self.ivr.default_voice; }
+  if (self.language || self.ivr.default_language) { say_opts.language = self.language || self.ivr.default_language; }
+  if (this.timeout || this.ivr.default_timout) { gather_opts.timeout = this.timeout || this.ivr.default_timout; }
+
+  this.ivr.twiml.gather(gather_opts, function() {
+    this.say(say_opts, prompt);
   });
 
   this.ivr.input_pending = true;

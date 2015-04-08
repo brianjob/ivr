@@ -26,6 +26,10 @@ module.exports.run = function() {
     this.say(say_opts, prompt);
   });
 
+  this.ivr.twiml.redirect({
+    method : 'POST',
+  }, '/');
+
   this.ivr.input_pending = true;
   
   return this.ivr.twiml.toString();

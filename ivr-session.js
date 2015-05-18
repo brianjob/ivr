@@ -14,6 +14,7 @@ ivr_factory = require('./ivr-factory');
 module.exports.newSession = function(req) {
   return sapp.ivr_settings(req.query.To).then(function(settings) {
     var ivr = ivr_factory.create(settings);
+    ivr.model.phone_number = req.query.From; // save phone number in model
     var result = ivr.run();
     return ivr_tracker.create(req.query, ivr).then(function() {
       req.session.ivr = ivr.toJSON();

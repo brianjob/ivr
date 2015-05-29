@@ -24,12 +24,13 @@ Each node can be though of as a point of interaction between the user and IVR.
 #+NAME: Node Method
 *** Node Method
 Each node has a method, which defines the nodes general behavior. The method types are defined as such:
-| *Name* | *Description*                                                                                                                     |
-| Say    | Simply reads a predefined string of text to the user. Content strings can by static or dynamic using a handlebars style template. |
-| Gather | Takes input from the user's touch-tone keypad and performs an action on said input.                                               |
-| Split  | Takes input from the user's touch-tone keypad and redirects to another node based on the user's input.                            |
-| Hangup | Ends the call.                                                                                                                    |
-| Action | Performs an action without accepting any input. Only can call library functions that don't take any input                         |
+| *Name*          | *Description*                                                                                                                     |
+| Say             | Simply reads a predefined string of text to the user. Content strings can by static or dynamic using a handlebars style template. |
+| Gather          | Takes input from the user's touch-tone keypad and performs an action on said input.                                               |
+| Split           | Takes input from the user's touch-tone keypad and redirects to another node based on the user's input.                            |
+| Split\_condition | Performs a split based on a condition defined as a libary function, rather than user input                                        |
+| Hangup          | Ends the call.                                                                                                                    |
+| Action          | Performs an action without accepting any input. Only can call library functions that don't take any input                         |
 
 *** General Node Settings
 These settings are applicable to nodes of most if not all methods
@@ -59,7 +60,7 @@ These settings are applicable only to gather nodes
 *** Split Settings
 These settings are applicable only to split nodes
 | *Name*                   | *Required/Optional* | *Description*                                                               | *Possible Values*                                     |
-| timeout                  | required            | the number of seconds the system will wait for user input before hanging up | any positive integer (values over 20 are discouraged) |
+| timeout                  | optional            | the number of seconds the system will wait for user input before hanging up | any positive integer (values over 20 are discouraged) |
 | paths                    | required            | a JSON array of objects describing the possible options (see  [[sec-1-2-7-1][Paths]])        | see [[sec-1-2-7-1][Paths]]                                             |
 | invalid\_input\_redirect | required            | id of the node to redirect to if the user enters invalid input              | the id of any other node in the ivr                   |
 
@@ -73,6 +74,19 @@ Each path object is defined as such:
 | redirect | required            | the id of the node to redirect to if this path is chosen    | the id of any node in the ivr |
 
 These paths will be read to the user in the form of: "Press [key] to [prompt]"
+
+*** Split Condition Settings
+| *Name*                   | *Required/Optional* | *Description*                                                               | *Possible Values*                                     |
+| timeout                  | optional            | the number of seconds the system will wait for user input before hanging up | any positive integer (values over 20 are discouraged) |
+| paths                    | required            | a JSON array of objects describing the possible options (see  [[sec-1-2-7-1][Paths]])        | see [[sec-1-2-7-1][Paths]]                                             |
+| invalid\_input\_redirect | required            | id of the node to redirect to if the user enters invalid input              | the id of any other node in the ivr                   |
+
+**** Condition Paths
+The paths setting of a condition_split node is defined as an array of JSON objects. The array must contain at least 1 object.
+Each path object is defined as such:
+| *Name*    | *Required/Optional* | *Description*                                                     | *Possible Values*                                                                  |
+| condition | required            | The name of the boolean returning function defined in the library | the string representation of any function in the library returning a boolean value |
+| redirect  | required            | the id of the node to redirect to if this condition is met        | the id of any node in the ivr                                                      |
 
 *** Action Settings
 These settings are applicable only to action nodes

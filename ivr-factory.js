@@ -74,6 +74,8 @@ module.exports.create = function(spec) {
       self.model.error = err;
       self.current_node = self.getNode(self.current_node.error_redirect || self.default_error_redirect);
       
+      console.log('REDIRECTING TO ' + self.current_node.id + ' BECAUSE OF ERROR');
+
       return self.current_node.run();
     };
     

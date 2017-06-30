@@ -18,7 +18,7 @@
 
 ## 1 IVR Settings Document
 
-The IVR settings document is a JSON document that describes the behavior of a Healpay custom IVR solution. There are two types of settings defined in the document: system settings, and node settings.
+The IVR settings document is a JSON document that describes the behavior of a custom IVR solution. There are two types of settings defined in the document: system settings, and node settings.
 
 ### 1.1 System Settings
 
@@ -86,7 +86,7 @@ These settings are applicable only to gather nodes
 | numDigits | optional if finishOnKey defined | the number of digits of user input to accept | any positive integer (values over 20 are discouraged) |
 | finishOnKey | optional if numDigits is defined | the system will stop collecting user input when the user presses this key | any of the following: [0, 1, 2, 4, 5, 6, 7, 8, 9, *, #] |
 | redirect | required | the id of the node to redirect to upon completion | the id of any other node in the ivr |
-| action | required | the name of an action defined in the HealPay IVR library | the name of any action in the HealPay IVR library |
+| action | required | the name of an action defined in the IVR library | the name of any action in the IVR library |
 
 #### 1.2.6 Split Settings
 

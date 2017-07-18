@@ -116,7 +116,7 @@ These settings are applicable only to split nodes
 |----------|-----------------------|-----------------|---------------------|
 | timeout | optional | the number of seconds the system will wait for user input before hanging up | any positive integer (values over 20 are discouraged) |
 | paths | required | a JSON array of objects describing the possible options (see _Paths_) | see _Paths_ |
-| invalid_input_redirect | required | id of the node to redirect to if the user enters invalid input | the id of any other node in the ivr |
+| default_redirect | required | id of the node to redirect to if none of the conditions are met | the id of any other node in the ivr |
 
 1.  Condition Paths
 
